@@ -24,7 +24,7 @@
             android:layout_marginBottom="24dp"
             android:textColor="@android:color/white"
             android:textSize="35sp"
-            android:text="AttendCheck"
+            android:text="@string/app_name"
             />
 
         <!-- username -->
@@ -42,7 +42,7 @@
                 android:textCursorDrawable="@null"
                 android:textColor="@android:color/white"
                 android:backgroundTint="@android:color/white"
-                android:hint="รหัสนักศึกษา"/>
+                android:hint="@string/login_username"/>
 
         </android.support.design.widget.TextInputLayout>
 
@@ -61,7 +61,7 @@
                 android:textCursorDrawable="@null"
                 android:textColor="@android:color/white"
                 android:backgroundTint="@android:color/white"
-                android:hint="Password"/>
+                android:hint="@string/login_password"/>
 
         </android.support.design.widget.TextInputLayout>
 
@@ -72,13 +72,15 @@
             android:layout_marginTop="24dp"
             android:layout_marginBottom="24dp"
             android:padding="12dp"
-            android:text="Login"/>
+            android:background="@color/colorPrimaryDark"
+            android:textColor="@android:color/white"
+            android:text="@string/login_loginBtn"/>
 
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="24dp"
-            android:text="ลงทะเบียน"
+            android:text="@string/login_registerLink"
             android:gravity="center"
             android:textColor="@android:color/white"
             android:textSize="16sp"/>
