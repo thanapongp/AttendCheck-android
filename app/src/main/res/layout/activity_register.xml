@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_login"
+    android:id="@+id/activity_register"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:fitsSystemWindows="true"
     android:background="@drawable/gradientbackground"
-    tools:context="com.example.tanap.attendcheck.LoginActivity">
+    tools:context="com.example.tanap.attendcheck.RegisterActivity">
 
     <LinearLayout
         android:orientation="vertical"
@@ -14,7 +14,9 @@
         android:layout_height="wrap_content"
         android:paddingTop="56dp"
         android:paddingLeft="24dp"
-        android:paddingRight="24dp">
+        android:paddingRight="24dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true">
 
         <TextView
             android:id="@+id/app_logo"
@@ -46,7 +48,7 @@
 
         </android.support.design.widget.TextInputLayout>
 
-        <!-- username -->
+        <!-- password -->
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -65,6 +67,24 @@
 
         </android.support.design.widget.TextInputLayout>
 
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:textColorHint="#fff">
+            <EditText
+                android:id="@+id/input_password_confirmation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:textCursorDrawable="@null"
+                android:textColor="@android:color/white"
+                android:backgroundTint="@android:color/white"
+                android:hint="@string/login_password_confirm"/>
+
+        </android.support.design.widget.TextInputLayout>
+
         <android.support.v7.widget.AppCompatButton
             android:id="@+id/btn_login"
             android:layout_width="fill_parent"
@@ -74,14 +94,14 @@
             android:padding="12dp"
             android:background="@color/colorPrimaryDark"
             android:textColor="@android:color/white"
-            android:text="@string/login_loginBtn"/>
+            android:text="@string/login_registerBtn"/>
 
         <TextView
-            android:id="@+id/goToRegisterLink"
+            android:id="@+id/backToRegisterLink"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="24dp"
-            android:text="@string/login_registerLink"
+            android:text="@string/login_backToLoginLink"
             android:gravity="center"
             android:textColor="@android:color/white"
             android:textSize="16sp"/>

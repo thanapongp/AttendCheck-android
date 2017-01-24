@@ -10,14 +10,14 @@ import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class LoginActivity extends AppCompatActivity {
+public class RegisterActivity extends AppCompatActivity {
     @BindView(R.id.app_logo) TextView logo;
-    @BindView(R.id.goToRegisterLink) TextView registerLink;
+    @BindView(R.id.backToRegisterLink) TextView backToRegister;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_register);
         ButterKnife.bind(this);
 
         this.boot();
@@ -29,10 +29,10 @@ public class LoginActivity extends AppCompatActivity {
         logo.setTypeface(ralewayFont);
 
         // set event listener
-        registerLink.setOnClickListener(new View.OnClickListener() {
+        backToRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(), RegisterActivity.class));
+                finish();
             }
         });
     }
