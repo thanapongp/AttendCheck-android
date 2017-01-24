@@ -49,7 +49,7 @@ public class LoginActivity extends AppCompatActivity implements AsyncResponseBoo
 
     @OnClick(R.id.btn_login)
     public void login() {
-        new LoginTask(getApplicationContext(), this).execute();
+        new LoginTask(LoginActivity.this, this).execute();
     }
 
     @Override
@@ -57,6 +57,6 @@ public class LoginActivity extends AppCompatActivity implements AsyncResponseBoo
      * What to do after login process is finished.
      */
     public void processFinish(Boolean result) {
-        Toast.makeText(getApplicationContext(), result ? "Success" : "NO!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(LoginActivity.this, result ? "Success" : "NO!", Toast.LENGTH_SHORT).show();
     }
 }
