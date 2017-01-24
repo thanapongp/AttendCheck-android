@@ -7,4 +7,5 @@
     <string name="login_registerBtn">ลงทะเบียน</string>
     <string name="login_registerLink">ลงทะเบียนเข้าใช้ระบบ</string>
     <string name="login_backToLoginLink">กลับไปหน้า Login</string>
+    <string name="login_msg_authenticating">กำลังเข้าสู่ระบบ</string>
 </resources>
