@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/activity_register"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
@@ -35,7 +36,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
-            android:textColorHint="#fff">
+            android:textColorHint="#fff"
+            app:hintTextAppearance="@style/EditTextLogin">
+
             <EditText
                 android:id="@+id/input_username"
                 android:layout_width="match_parent"
@@ -54,7 +57,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
-            android:textColorHint="#fff">
+            android:textColorHint="#fff"
+            app:hintTextAppearance="@style/EditTextLogin">
             <EditText
                 android:id="@+id/input_password"
                 android:layout_width="match_parent"
@@ -72,7 +76,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
-            android:textColorHint="#fff">
+            android:textColorHint="#fff"
+            app:hintTextAppearance="@style/EditTextLogin">
             <EditText
                 android:id="@+id/input_password_confirmation"
                 android:layout_width="match_parent"
