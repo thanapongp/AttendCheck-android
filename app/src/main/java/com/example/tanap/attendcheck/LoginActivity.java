@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -16,13 +17,13 @@ import com.example.tanap.attendcheck.tasks.LoginTask;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.OnTextChanged;
 
 public class LoginActivity extends AppCompatActivity implements AsyncResponseBoolean {
     @BindView(R.id.app_logo) TextView logo;
     @BindView(R.id.input_username) EditText inputUsername;
     @BindView(R.id.input_password) EditText inputPassword;
     @BindView(R.id.btn_login) Button loginBtn;
-    @BindView(R.id.goToRegisterLink) TextView registerLink;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,18 +39,30 @@ public class LoginActivity extends AppCompatActivity implements AsyncResponseBoo
         Typeface ralewayFont = Typeface.createFromAsset(getAssets(), "fonts/Raleway-regular.ttf");
         logo.setTypeface(ralewayFont);
 
-        // set event listener
-        registerLink.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(), RegisterActivity.class));
-            }
-        });
+        loginBtn.setEnabled(false);
+    }
+
+    @OnClick(R.id.goToRegisterLink)
+    public void showRegisterPage() {
+        startActivity(new Intent(getApplicationContext(), RegisterActivity.class));
     }
 
     @OnClick(R.id.btn_login)
     public void login() {
         new LoginTask(LoginActivity.this, this).execute();
+    }
+
+    @OnTextChanged(
+            value = { R.id.input_username, R.id.input_password },
+            callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED
+    )
+    public void validateInputs() {
+        if (TextUtils.isEmpty(inputUsername.getText()) ||
+            TextUtils.isEmpty(inputPassword.getText())) {
+            loginBtn.setEnabled(false);
+        } else {
+            loginBtn.setEnabled(true);
+        }
     }
 
     @Override
