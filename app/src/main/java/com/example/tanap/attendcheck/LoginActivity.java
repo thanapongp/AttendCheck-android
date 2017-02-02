@@ -39,6 +39,7 @@ public class LoginActivity extends AppCompatActivity implements AsyncResponseBoo
         Typeface ralewayFont = Typeface.createFromAsset(getAssets(), "fonts/Raleway-regular.ttf");
         logo.setTypeface(ralewayFont);
 
+        loginBtn.setAlpha(.75f);
         loginBtn.setEnabled(false);
     }
 
@@ -59,8 +60,10 @@ public class LoginActivity extends AppCompatActivity implements AsyncResponseBoo
     public void validateInputs() {
         if (TextUtils.isEmpty(inputUsername.getText()) ||
             TextUtils.isEmpty(inputPassword.getText())) {
+            loginBtn.setAlpha(.75f);
             loginBtn.setEnabled(false);
         } else {
+            loginBtn.setAlpha(1);
             loginBtn.setEnabled(true);
         }
     }
