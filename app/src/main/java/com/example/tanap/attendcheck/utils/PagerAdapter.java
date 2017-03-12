@@ -24,8 +24,6 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
                 return new AttendCheckFragment();
             case 1:
                 return new HistoryFragment();
-            case 2:
-                return new SettingFragment();
             default:
                 throw new RuntimeException("Unknow Tab postion");
         }

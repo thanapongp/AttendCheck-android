@@ -18,11 +18,19 @@
     
     <style name="NoShadowActionBar" parent="Base.Widget.AppCompat.ActionBar.Solid">
         <item name="android:background">@color/colorPrimary</item>
+        <item name="android:colorControlNormal">@android:color/white</item>
         <item name="elevation">0dp</item>
     </style>
 
     <style name="EditTextLogin" parent="@android:style/TextAppearance">
         <item name="android:textColor">@android:color/white</item>
         <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="PreferenceScreen" parent="Theme.AppCompat.NoActionBar">
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorControlActivated">#f1f1f1</item>
+        <item name="colorSwitchThumbNormal">#000</item>
+        <item name="android:colorForeground">@color/colorPrimaryDark</item>
     </style>
 </resources>
