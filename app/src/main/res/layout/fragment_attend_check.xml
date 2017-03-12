@@ -1,0 +1,91 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.tanap.attendcheck.fragments.AttendCheckFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingTop="16dp"
+        android:paddingLeft="24dp"
+        android:paddingRight="24dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true">
+
+        <TextView
+            android:id="@+id/text_attendStatus"
+            android:paddingTop="36dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:textSize="30sp"
+            android:textColor="@android:color/white"
+            android:text="คุณยังไม่ได้เช็คชื่อ"/>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:paddingTop="48dp">
+
+            <TextView
+                android:id="@+id/text_subjectName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/white"
+                android:textAlignment="center"
+                android:text="วิชา: 1106204 ระบบฐานข้อมูล"/>
+
+            <TextView
+                android:id="@+id/text_roomName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="10dp"
+                android:textColor="@android:color/white"
+                android:textAlignment="center"
+                android:text="ห้อง: SC412"
+                android:layout_below="@id/text_subjectName"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="110dp"
+            android:layout_height="110dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="24dp"
+            android:paddingTop="36dp">
+
+            <FrameLayout
+                android:id="@+id/fab_wrapper"
+                android:layout_width="110dp"
+                android:layout_height="110dp">
+                <android.support.design.widget.FloatingActionButton
+                    android:id="@+id/btn_checkBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_horizontal"
+                    android:clickable="true"
+                    app:fabSize="normal"
+                    app:borderWidth="0dp"
+                    app:elevation="0dp"
+                    app:backgroundTint="@android:color/white"
+                    android:tint="@android:color/holo_green_dark"
+                    android:src="@drawable/ic_done_white_64dp_1x"
+                    />
+            </FrameLayout>
+
+        </RelativeLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="15dp"
+            android:textColor="@android:color/white"
+            android:textAlignment="center"
+            android:text="กดเพื่อเช็คชื่อ"/>
+
+    </LinearLayout>
+</FrameLayout>

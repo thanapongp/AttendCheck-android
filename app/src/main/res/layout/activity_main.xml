@@ -5,102 +5,38 @@
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
     android:background="@drawable/gradientbackground"
     tools:context="com.example.tanap.attendcheck.MainActivity">
 
-    <LinearLayout
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingTop="36dp"
-        android:paddingLeft="24dp"
-        android:paddingRight="24dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true">
+        app:theme="@style/NoShadowActionBar">
 
         <TextView
-            android:id="@+id/text_welcomeName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
+            android:text="@string/app_name"
             android:textColor="@android:color/white"
-            android:text="สวัสดีคุณ ธนะพงศ์ ประทุมชาติ"/>
+            android:textSize="20sp"/>
 
-        <TextView
-            android:id="@+id/text_attendStatus"
-            android:paddingTop="36dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:textSize="30sp"
-            android:textColor="@android:color/white"
-            android:text="คุณยังไม่ได้เช็คชื่อ"/>
+    </android.support.v7.widget.Toolbar>
 
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:paddingTop="36dp">
+    <android.support.design.widget.TabLayout
+        android:id="@+id/tabLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/toolBar"
+        android:background="@color/colorPrimary"
+        app:tabTextColor="@android:color/secondary_text_light_nodisable"
+        app:tabSelectedTextColor="@android:color/white"
+        />
 
-            <TextView
-                android:id="@+id/text_subjectName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@android:color/white"
-                android:textAlignment="center"
-                android:text="วิชา: Database"/>
+    <android.support.v4.view.ViewPager
+        android:id="@+id/pager"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@id/tabLayout"/>
 
-            <TextView
-                android:id="@+id/text_roomName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="10dp"
-                android:textColor="@android:color/white"
-                android:textAlignment="center"
-                android:text="ห้อง: SC412"
-                android:layout_below="@id/text_subjectName"/>
-
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="110dp"
-            android:layout_height="110dp"
-            android:layout_gravity="center_horizontal"
-            android:paddingTop="36dp">
-
-            <FrameLayout
-                android:id="@+id/fab_wrapper"
-                android:layout_width="110dp"
-                android:layout_height="110dp">
-                <android.support.design.widget.FloatingActionButton
-                    android:id="@+id/btn_checkBtn"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center_horizontal"
-                    android:clickable="true"
-                    android:onClick="performAttendanceCheck"
-                    app:fabSize="normal"
-                    app:borderWidth="0dp"
-                    app:elevation="0dp"
-                    app:backgroundTint="@android:color/white"
-                    android:tint="@android:color/holo_green_dark"
-                    android:src="@drawable/ic_done_white_64dp_1x"
-                    />
-            </FrameLayout>
-
-        </RelativeLayout>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="15dp"
-            android:textColor="@android:color/white"
-            android:textAlignment="center"
-            android:text="กดเพื่อเช็คชื่อ"/>
-
-    </LinearLayout>
 </RelativeLayout>

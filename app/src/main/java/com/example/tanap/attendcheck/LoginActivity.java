@@ -73,7 +73,7 @@ public class LoginActivity extends AppCompatActivity implements AsyncResponseBoo
      * What to do after login process is finished.
      */
     public void processFinish(Boolean result) {
-        //Toast.makeText(LoginActivity.this, result ? "Success" : "NO!", Toast.LENGTH_SHORT).show();
+        finish();
         startActivity(new Intent(getApplicationContext(), MainActivity.class));
     }
 }

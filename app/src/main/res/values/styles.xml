@@ -8,6 +8,19 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="DarkActionBar" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="actionBarStyle">@style/NoShadowActionBar</item>
+    </style>
+    
+    <style name="NoShadowActionBar" parent="Base.Widget.AppCompat.ActionBar.Solid">
+        <item name="android:background">@color/colorPrimary</item>
+        <item name="elevation">0dp</item>
+    </style>
+
     <style name="EditTextLogin" parent="@android:style/TextAppearance">
         <item name="android:textColor">@android:color/white</item>
         <item name="android:textSize">14sp</item>

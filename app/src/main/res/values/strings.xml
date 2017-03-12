@@ -8,4 +8,7 @@
     <string name="login_registerLink">ลงทะเบียนเข้าใช้ระบบ</string>
     <string name="login_backToLoginLink">กลับไปหน้า Login</string>
     <string name="login_msg_authenticating">กำลังเข้าสู่ระบบ</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
