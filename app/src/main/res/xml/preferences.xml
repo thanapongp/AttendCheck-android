@@ -9,10 +9,27 @@
             android:defaultValue="true"/>
         <ListPreference
             android:key="pref_notificaionOffset"
+            android:dependency="pref_enableNotification"
             android:title="เวลาที่แจ้งก่อนถึงเวลาเรียน"
             android:summary="%s"
             android:defaultValue="10"
             android:entries="@array/notificationMinsListDisplay"
             android:entryValues="@array/notificationMinsList" />
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:title="การแจ้งเตือน"
+        android:key="pref_cat_sync">
+        <SwitchPreference
+            android:key="pref_enableSync"
+            android:title="Sync ข้อมูลอัตโนมัติ"
+            android:defaultValue="true"/>
+        <ListPreference
+            android:key="pref_syncDuration"
+            android:dependency="pref_enableSync"
+            android:title="ระยะเลาในการ Sync ข้อมูล"
+            android:summary="%s"
+            android:defaultValue="3"
+            android:entries="@array/syncDurationListDisplay"
+            android:entryValues="@array/syncDurationList" />
     </PreferenceCategory>
 </PreferenceScreen>

@@ -10,4 +10,14 @@
         <item>10</item>
         <item>15</item>
     </string-array>
+    <string-array name="syncDurationListDisplay">
+        <item>1 ชั่วโมง</item>
+        <item>3 ชั่วโมง</item>
+        <item>6 ชั่วโมง</item>
+    </string-array>
+    <string-array name="syncDurationList">
+        <item>1</item>
+        <item>3</item>
+        <item>6</item>
+    </string-array>
 </resources>
