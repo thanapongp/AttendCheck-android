@@ -1,13 +1,17 @@
 <resources>
     <string name="app_name">AttendCheck</string>
     <string name="login_username">รหัสนักศึกษา</string>
+    <string name="login_email">E-mail</string>
     <string name="login_password">Password</string>
     <string name="login_password_confirm">Password (อีกครั้ง)</string>
-    <string name="login_loginBtn">Login</string>
+    <string name="login_loginBtn">ลงทะเบียนอุปกรณ์ใหม่</string>
     <string name="login_registerBtn">ลงทะเบียน</string>
     <string name="login_registerLink">ลงทะเบียนเข้าใช้ระบบ</string>
-    <string name="login_backToLoginLink">กลับไปหน้า Login</string>
+    <string name="login_backToLoginLink">ลงทะเบียนอุปกรณ์ใหม่</string>
     <string name="login_msg_authenticating">กำลังเข้าสู่ระบบ</string>
+    <string name="login_msg_registering">กำลังทำการลงทะเบียน</string>
+    <string name="app_server_address">http://192.168.1.103:8000</string>
+    <string name="app_server_register_endpoint">/api/register</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

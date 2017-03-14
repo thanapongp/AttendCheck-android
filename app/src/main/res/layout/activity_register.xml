@@ -5,7 +5,6 @@
     android:id="@+id/activity_register"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:fitsSystemWindows="true"
     android:background="@drawable/gradientbackground"
     tools:context="com.example.tanap.attendcheck.RegisterActivity">
 
@@ -13,7 +12,7 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="56dp"
+        android:paddingTop="26dp"
         android:paddingLeft="24dp"
         android:paddingRight="24dp"
         android:layout_alignParentTop="true"
@@ -22,11 +21,11 @@
         <TextView
             android:id="@+id/app_logo"
             android:layout_width="wrap_content"
-            android:layout_height="72dp"
+            android:layout_height="28dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="24dp"
             android:textColor="@android:color/white"
-            android:textSize="35sp"
+            android:textSize="28sp"
             android:text="@string/app_name"
             />
 
@@ -43,11 +42,32 @@
                 android:id="@+id/input_username"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="text"
+                android:inputType="number"
                 android:textCursorDrawable="@null"
                 android:textColor="@android:color/white"
                 android:backgroundTint="@android:color/white"
                 android:hint="@string/login_username"/>
+
+        </android.support.design.widget.TextInputLayout>
+
+        <!-- username -->
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:textColorHint="#fff"
+            app:hintTextAppearance="@style/EditTextLogin">
+
+            <EditText
+                android:id="@+id/input_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textEmailAddress"
+                android:textCursorDrawable="@null"
+                android:textColor="@android:color/white"
+                android:backgroundTint="@android:color/white"
+                android:hint="@string/login_email"/>
 
         </android.support.design.widget.TextInputLayout>
 
@@ -91,7 +111,7 @@
         </android.support.design.widget.TextInputLayout>
 
         <android.support.v7.widget.AppCompatButton
-            android:id="@+id/btn_login"
+            android:id="@+id/btn_register"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
@@ -102,7 +122,7 @@
             android:text="@string/login_registerBtn"/>
 
         <TextView
-            android:id="@+id/backToRegisterLink"
+            android:id="@+id/registerNewDeviceLink"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="24dp"

@@ -5,21 +5,16 @@ import android.graphics.Typeface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.example.tanap.attendcheck.interfaces.AsyncResponseBoolean;
-import com.example.tanap.attendcheck.tasks.LoginTask;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnTextChanged;
 
-public class LoginActivity extends AppCompatActivity implements AsyncResponseBoolean {
+public class RegisterNewDeviceActivity extends AppCompatActivity {
     @BindView(R.id.app_logo) TextView logo;
     @BindView(R.id.input_username) EditText inputUsername;
     @BindView(R.id.input_password) EditText inputPassword;
@@ -28,7 +23,7 @@ public class LoginActivity extends AppCompatActivity implements AsyncResponseBoo
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_register_new_device);
         ButterKnife.bind(this);
 
         this.boot();
@@ -45,12 +40,12 @@ public class LoginActivity extends AppCompatActivity implements AsyncResponseBoo
 
     @OnClick(R.id.goToRegisterLink)
     public void showRegisterPage() {
-        startActivity(new Intent(getApplicationContext(), RegisterActivity.class));
+        finish();
     }
 
     @OnClick(R.id.btn_login)
     public void login() {
-        new LoginTask(LoginActivity.this, this).execute();
+        Toast.makeText(this, "show popup etc etc", Toast.LENGTH_SHORT).show();
     }
 
     @OnTextChanged(
@@ -66,14 +61,5 @@ public class LoginActivity extends AppCompatActivity implements AsyncResponseBoo
             loginBtn.setAlpha(1);
             loginBtn.setEnabled(true);
         }
-    }
-
-    @Override
-    /**
-     * What to do after login process is finished.
-     */
-    public void processFinish(Boolean result) {
-        finish();
-        startActivity(new Intent(getApplicationContext(), MainActivity.class));
     }
 }
