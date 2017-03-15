@@ -3,6 +3,7 @@ package com.example.tanap.attendcheck;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Typeface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -14,6 +15,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.tanap.attendcheck.db.DB;
 import com.example.tanap.attendcheck.interfaces.AsyncResponseBoolean;
 import com.example.tanap.attendcheck.tasks.RegisterTask;
 
@@ -74,6 +76,10 @@ public class RegisterActivity extends AppCompatActivity implements AsyncResponse
             }
         });
 
+        // Create DB for the first time and then close it.
+        SQLiteDatabase db = new DB(getApplicationContext()).getWritableDatabase();
+        db.close();
+
         validateInputs();
     }
 
@@ -109,11 +115,22 @@ public class RegisterActivity extends AppCompatActivity implements AsyncResponse
         }
 
         new RegisterTask(RegisterActivity.this, this)
-        .execute(usernameEditText.getText().toString(), passwordEditText.getText().toString());
+        .execute(
+                usernameEditText.getText().toString(),
+                passwordEditText.getText().toString(),
+                emailEditText.getText().toString()
+        );
     }
 
     @Override
     public void processFinish(Boolean result) {
-        Toast.makeText(this, "done!", Toast.LENGTH_SHORT).show();
+        if (! result) {
+            return;
+        }
+
+        getApplicationContext().getSharedPreferences("login_pref", Context.MODE_PRIVATE)
+                .edit()
+                .putBoolean("already_login", true)
+                .apply();
     }
 }

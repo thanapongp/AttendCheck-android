@@ -7,15 +7,14 @@ public class Courses extends Table {
 
     public static String getCreateSQL() {
         return "CREATE TABLE IF NOT EXISTS `courses` (\n" +
-                "  `" + Column.ID + "` int(10) unsigned NOT NULL AUTO_INCREMENT,\n" +
-                "  `code` varchar(191) NOT NULL,\n" +
-                "  `name` varchar(191) NOT NULL,\n" +
-                "  `section` int(10) unsigned NOT NULL,\n" +
-                "  `semester` varchar(191) NOT NULL,\n" +
-                "  `year` int(10) unsigned NOT NULL,\n" +
-                "  `late_time` tinyint(3) unsigned NOT NULL,\n" +
-                "  `updated_at` timestamp NULL DEFAULT NULL,\n" +
-                "  PRIMARY KEY (`id`));";
+                "  `" + Column.ID + "` INTEGER PRIMARY KEY AUTOINCREMENT,\n" +
+                "  `code` TEXT,\n" +
+                "  `name` TEXT,\n" +
+                "  `section` INTEGER,\n" +
+                "  `semester` TEXT,\n" +
+                "  `year` INTEGER,\n" +
+                "  `late_time` INTEGER,\n" +
+                "  `updated_at` TEXT);";
     }
 
     public class Column implements BaseColumns {

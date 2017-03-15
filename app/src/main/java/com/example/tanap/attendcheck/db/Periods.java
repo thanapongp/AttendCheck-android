@@ -7,14 +7,13 @@ public class Periods extends Table {
 
     public static String getCreateSQL() {
         return "CREATE TABLE IF NOT EXISTS `periods` (\n" +
-                "  `" + Column.ID + "` int(10) unsigned NOT NULL AUTO_INCREMENT,\n" +
-                "  `course_id` int(10) unsigned NOT NULL,\n" +
-                "  `day` tinyint(3) unsigned NOT NULL,\n" +
-                "  `start_time` time NOT NULL,\n" +
-                "  `end_time` time NOT NULL,\n" +
-                "  `room` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',\n" +
-                "  `created_at` timestamp NULL DEFAULT NULL,\n" +
-                "  PRIMARY KEY (`id`));";
+                "  `" + Column.ID + "` INTEGER PRIMARY KEY AUTOINCREMENT,\n" +
+                "  `course_id` TEXT,\n" +
+                "  `day` TEXT,\n" +
+                "  `start_time` TEXT,\n" +
+                "  `end_time` TEXT,\n" +
+                "  `room` TEXT,\n" +
+                "  `created_at` TEXT);";
     }
 
     public class Column implements BaseColumns {

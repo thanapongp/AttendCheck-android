@@ -7,12 +7,11 @@ public class Attendances extends Table {
 
     public static String getCreateSQL() {
         return "CREATE TABLE IF NOT EXISTS `attendances` (\n" +
-                "  `" + Column.ID + "` int(10) unsigned NOT NULL AUTO_INCREMENT,\n" +
-                "  `schedule_id` int(10) unsigned NOT NULL,\n" +
-                "  `student_id` int(10) unsigned NOT NULL,\n" +
-                "  `in_time` datetime NOT NULL,\n" +
-                "  `late` tinyint(1) NOT NULL DEFAULT '0',\n" +
-                "  PRIMARY KEY (`id`));";
+                "  `" + Column.ID + "` INTEGER PRIMARY KEY AUTOINCREMENT,\n" +
+                "  `schedule_id` INTEGER,\n" +
+                "  `student_id` INTEGER,\n" +
+                "  `in_time` TEXT,\n" +
+                "  `late` INTEGER DEFAULT 0);";
     }
 
     public class Column implements BaseColumns {
