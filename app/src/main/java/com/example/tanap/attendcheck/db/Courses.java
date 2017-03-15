@@ -5,8 +5,8 @@ import android.provider.BaseColumns;
 public class Courses extends Table {
     public static final String TABLE = "courses";
 
-    public String getCreateSQL() {
-        return "CREATE TABLE `courses` (\n" +
+    public static String getCreateSQL() {
+        return "CREATE TABLE IF NOT EXISTS `courses` (\n" +
                 "  `" + Column.ID + "` int(10) unsigned NOT NULL AUTO_INCREMENT,\n" +
                 "  `code` varchar(191) NOT NULL,\n" +
                 "  `name` varchar(191) NOT NULL,\n" +

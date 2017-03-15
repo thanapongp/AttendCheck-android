@@ -5,8 +5,8 @@ import android.provider.BaseColumns;
 public class User extends Table {
     public static final String TABLE = "user";
 
-    public String getCreateSQL() {
-        return "CREATE TABLE `users` (\n" +
+    public static String getCreateSQL() {
+        return "CREATE TABLE IF NOT EXISTS `users` (\n" +
                 "  `" + Column.ID + "` int(10) unsigned NOT NULL AUTO_INCREMENT,\n" +
                 "  `username` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,\n" +
                 "  `password` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT '',\n" +
