@@ -47,6 +47,11 @@ public class RegisterActivity extends AppCompatActivity implements AsyncResponse
         setContentView(R.layout.activity_register);
         ButterKnife.bind(this);
 
+        //!!IMPORTANT!! Delete database every time the application start (for testing purpose)
+//        SQLiteDatabase db = new DB(getApplicationContext()).getWritableDatabase();
+//        db.close();
+//        this.deleteDatabase(DB.DATABASE_NAME);
+
         this.boot();
     }
 
@@ -128,9 +133,13 @@ public class RegisterActivity extends AppCompatActivity implements AsyncResponse
             return;
         }
 
+        //Toast.makeText(this, "all done!", Toast.LENGTH_SHORT).show();
+
         getApplicationContext().getSharedPreferences("login_pref", Context.MODE_PRIVATE)
                 .edit()
                 .putBoolean("already_login", true)
                 .apply();
+
+        startMainActivity();
     }
 }

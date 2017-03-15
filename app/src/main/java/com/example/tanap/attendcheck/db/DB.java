@@ -8,7 +8,7 @@ import android.util.Log;
 public class DB extends SQLiteOpenHelper {
 
     private static final int DATABASE_VERSION = 1;
-    private static final String DATABASE_NAME = "attendcheck.db";
+    public static final String DATABASE_NAME = "attendcheck.db";
     Context context;
 
     public DB(Context context) {
