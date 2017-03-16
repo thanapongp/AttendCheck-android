@@ -89,6 +89,8 @@ public class AttendCheckFragment extends Fragment {
         courseName = schedule.get(0).get("code") + " " + schedule.get(0).get("name");
         courseRoom = schedule.get(0).get("room");
 
+        schedulesTable.closeDB();
+
         subjectText.setText("วิชา: " + courseName);
         roomText.setText("ห้อง: " + courseRoom);
     }

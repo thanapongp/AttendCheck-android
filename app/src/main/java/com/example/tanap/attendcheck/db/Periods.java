@@ -1,7 +1,11 @@
 package com.example.tanap.attendcheck.db;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.provider.BaseColumns;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Periods extends Table {
     public static final String TABLE = "periods";
@@ -19,6 +23,24 @@ public class Periods extends Table {
                 "  `end_time` TEXT,\n" +
                 "  `room` TEXT,\n" +
                 "  `updated_at` TEXT);";
+    }
+
+    public ArrayList<String> getAvailibleDays() {
+        Cursor cursor = db.rawQuery("SELECT DISTINCT " +
+                "(CASE day " +
+                "WHEN 2 THEN 'วันอังคาร' " +
+                "WHEN 5 THEN 'วันศุกร์' " +
+                "END) AS day FROM periods", null);
+
+        ArrayList<String> data = new ArrayList<>();
+
+        while (cursor.moveToNext()) {
+            data.add(cursor.getString(cursor.getColumnIndex("day")));
+        }
+
+        cursor.close();
+
+        return data;
     }
 
     public class Column implements BaseColumns {
