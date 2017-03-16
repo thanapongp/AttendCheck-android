@@ -1,9 +1,14 @@
 package com.example.tanap.attendcheck.db;
 
+import android.content.Context;
 import android.provider.BaseColumns;
 
 public class Courses extends Table {
     public static final String TABLE = "courses";
+
+    public Courses(Context context) {
+        super(context);
+    }
 
     public static String getCreateSQL() {
         return "CREATE TABLE IF NOT EXISTS `courses` (\n" +
