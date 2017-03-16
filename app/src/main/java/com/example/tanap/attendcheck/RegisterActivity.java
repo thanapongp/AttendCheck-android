@@ -48,9 +48,9 @@ public class RegisterActivity extends AppCompatActivity implements AsyncResponse
         ButterKnife.bind(this);
 
         //!!IMPORTANT!! Delete database every time the application start (for testing purpose)
-//        SQLiteDatabase db = new DB(getApplicationContext()).getWritableDatabase();
-//        db.close();
-//        this.deleteDatabase(DB.DATABASE_NAME);
+        SQLiteDatabase db = new DB(getApplicationContext()).getWritableDatabase();
+        db.close();
+        this.deleteDatabase(DB.DATABASE_NAME);
 
         this.boot();
     }
