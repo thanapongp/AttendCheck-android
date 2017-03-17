@@ -4,7 +4,10 @@ import android.content.Context;
 import android.database.Cursor;
 import android.provider.BaseColumns;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 
 public class Periods extends Table {
@@ -36,6 +39,47 @@ public class Periods extends Table {
 
         while (cursor.moveToNext()) {
             data.add(cursor.getString(cursor.getColumnIndex("day")));
+        }
+
+        cursor.close();
+
+        return data;
+    }
+
+    public ArrayList<HashMap<String, String>> getPeriodsOnSelectedDay(Integer dayValue) {
+        Cursor cursor = db.rawQuery(
+                "SELECT courses.name, periods.room, periods.start_time, periods.end_time " +
+                "FROM courses, periods " +
+                "WHERE periods.day = ? AND periods.course_id = courses._id",
+                new String[] { dayValue.toString() });
+
+        ArrayList<HashMap<String, String>> data = new ArrayList<>();
+
+        while (cursor.moveToNext()) {
+            HashMap<String, String> dataHashMap = new HashMap<>();
+
+            SimpleDateFormat inFormat = new SimpleDateFormat("HH:mm:ss");
+            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+
+            String start_time = "";
+            String end_time = "";
+
+            try {
+                Date start_date = inFormat.parse(cursor.getString(cursor.getColumnIndex("start_time")));
+                Date end_date = inFormat.parse(cursor.getString(cursor.getColumnIndex("end_time")));
+
+                start_time = sdf.format(start_date);
+                end_time = sdf.format(end_date);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            dataHashMap.put("name", cursor.getString(cursor.getColumnIndex("name")));
+            dataHashMap.put("room", cursor.getString(cursor.getColumnIndex("room")));
+            dataHashMap.put("start_time", start_time + " - " + end_time);
+            dataHashMap.put("end_time", cursor.getString(cursor.getColumnIndex("end_time")));
+
+            data.add(dataHashMap);
         }
 
         cursor.close();

@@ -2,7 +2,6 @@ package com.example.tanap.attendcheck;
 
 import android.content.Intent;
 import android.graphics.Typeface;
-import android.net.Uri;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -12,15 +11,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
-import com.example.tanap.attendcheck.fragments.AttendCheckFragment.OnAttendCheckFragmentInteractionListener;
 import com.example.tanap.attendcheck.utils.PagerAdapter;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity
-        implements OnAttendCheckFragmentInteractionListener
-{
+public class MainActivity extends AppCompatActivity {
     @BindView(R.id.toolBar_logo) TextView toolbar_logo;
     @BindView(R.id.tabLayout) TabLayout tabLayout;
     @BindView(R.id.pager) ViewPager viewPager;
@@ -69,11 +65,6 @@ public class MainActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
-    }
-
-    @Override
-    public void onFragmentInteraction(Uri uri) {
-
     }
 
     public void openSettingActivity(MenuItem item) {

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:background="#25000000"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="5dp"
+        android:paddingBottom="3dp">
+        <TextView
+            android:textColor="@android:color/white"
+            android:paddingTop="12dp"
+            android:paddingLeft="30dp"
+            android:textSize="15sp"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/item_subjectname"
+            android:text="ชื่อวิชา" />
+
+        <TextView
+            android:textColor="@android:color/white"
+            android:layout_width="match_parent"
+            android:layout_height="26dip"
+            android:id="@+id/item_time"
+            android:layout_toRightOf="@+id/item_subjectname"
+            android:textSize="16sp"
+            android:text="เวลา"/>
+
+        <TextView
+            android:textColor="@android:color/white"
+            android:layout_width="match_parent"
+            android:layout_height="26dip"
+            android:id="@+id/item_subjectroom"
+            android:layout_toRightOf="@+id/item_subjectname"
+            android:layout_below="@+id/item_time"
+            android:textSize="16sp"
+            android:text="ห้อง"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_below="@id/item_subjectroom"/>
+    </RelativeLayout>
+</LinearLayout>

@@ -27,8 +27,6 @@ public class AttendCheckFragment extends Fragment {
     @BindView(R.id.text_subjectName) TextView subjectText;
     @BindView(R.id.text_roomName) TextView roomText;
 
-    private OnAttendCheckFragmentInteractionListener mListener;
-
     public FloatingActionButton checkBtn;
     private String courseName;
     private String courseRoom;
@@ -51,20 +49,8 @@ public class AttendCheckFragment extends Fragment {
     }
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnAttendCheckFragmentInteractionListener) {
-            mListener = (OnAttendCheckFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
-
-    @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
     }
 
     @Override
@@ -80,7 +66,7 @@ public class AttendCheckFragment extends Fragment {
             }
         });
 
-        Schedules schedulesTable = new Schedules(getContext());
+        Schedules schedulesTable = new Schedules(getActivity().getApplicationContext());
         ArrayList<HashMap<String, String>> schedule = schedulesTable.getNextOrCurrentSchedule();
 
         Log.d("Data", schedule.get(0).get("name"));
@@ -93,10 +79,5 @@ public class AttendCheckFragment extends Fragment {
 
         subjectText.setText("วิชา: " + courseName);
         roomText.setText("ห้อง: " + courseRoom);
-    }
-
-    public interface OnAttendCheckFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
     }
 }
