@@ -15,17 +15,17 @@ public class Schedules extends Table {
     }
 
     public ArrayList<HashMap<String, String>> getNextOrCurrentSchedule() {
-        Cursor cursor = db.rawQuery(
-                "SELECT courses.code, courses.name, schedules.room, schedules.start_date, schedules.end_date " +
-                        "FROM courses, schedules " +
-                        "WHERE schedules.course_id = courses._id AND start_date > (DATETIME('now')) " +
-                        "ORDER BY schedules.start_date ASC LIMIT 1;", null);
+        Cursor cursor = getCurrentSchedule();
+        if (cursor.getCount() == 0) {
+            cursor = getNextSchedule();
+        }
 
         ArrayList<HashMap<String, String>> data = new ArrayList<>();
 
         while (cursor.moveToNext()) {
             HashMap<String, String> dataHashMap = new HashMap<>();
 
+            dataHashMap.put("id", cursor.getString(cursor.getColumnIndex("_id")));
             dataHashMap.put("code", cursor.getString(cursor.getColumnIndex("code")));
             dataHashMap.put("name", cursor.getString(cursor.getColumnIndex("name")));
             dataHashMap.put("room", cursor.getString(cursor.getColumnIndex("room")));
@@ -38,6 +38,24 @@ public class Schedules extends Table {
         cursor.close();
 
         return data;
+    }
+
+    private Cursor getCurrentSchedule() {
+        return db.rawQuery(
+                "SELECT schedules._id, courses.code, courses.name, schedules.room, schedules.start_date, schedules.end_date " +
+                        "FROM courses, schedules " +
+                        "WHERE schedules.course_id = courses._id " +
+                        "AND start_date < (DATETIME('now','localtime')) " +
+                        "AND end_date > (DATETIME('now','localtime')) " +
+                        "ORDER BY schedules.start_date ASC LIMIT 1;", null);
+    }
+
+    private Cursor getNextSchedule() {
+        return db.rawQuery(
+                "SELECT schedules._id, courses.code, courses.name, schedules.room, schedules.start_date, schedules.end_date " +
+                        "FROM courses, schedules " +
+                        "WHERE schedules.course_id = courses._id AND start_date > (DATETIME('now','localtime')) " +
+                        "ORDER BY schedules.start_date ASC LIMIT 1;", null);
     }
 
     public static String getCreateSQL() {

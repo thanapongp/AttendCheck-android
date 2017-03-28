@@ -31,8 +31,13 @@ public class Periods extends Table {
     public ArrayList<String> getAvailibleDays() {
         Cursor cursor = db.rawQuery("SELECT DISTINCT " +
                 "(CASE day " +
+                "WHEN 1 THEN 'วันจันทร์' " +
                 "WHEN 2 THEN 'วันอังคาร' " +
+                "WHEN 3 THEN 'วันพุธ' " +
+                "WHEN 4 THEN 'วันพฤหัส' " +
                 "WHEN 5 THEN 'วันศุกร์' " +
+                "WHEN 6 THEN 'วันเสาร์'" +
+                "WHEN 7 THEN 'วันอาทิตย์'" +
                 "END) AS day FROM periods", null);
 
         ArrayList<String> data = new ArrayList<>();

@@ -1,7 +1,11 @@
 package com.example.tanap.attendcheck.db;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.provider.BaseColumns;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class User extends Table {
     public static final String TABLE = "users";
@@ -21,6 +25,27 @@ public class User extends Table {
                 "  `lastname` TEXT,\n" +
                 "  `uid` TEXT,\n" +
                 "  `updated_at` TEXT);";
+    }
+
+    public ArrayList<HashMap<String, String>> getUserInfo() {
+        Cursor cursor = db.rawQuery(
+                "SELECT * FROM users", null);
+
+        ArrayList<HashMap<String, String>> data = new ArrayList<>();
+
+        while (cursor.moveToNext()) {
+            HashMap<String, String> dataHashMap = new HashMap<>();
+
+            dataHashMap.put("username", cursor.getString(cursor.getColumnIndex("username")));
+            dataHashMap.put("uid", cursor.getString(cursor.getColumnIndex("uid")));
+
+            data.add(dataHashMap);
+        }
+
+        cursor.close();
+        super.closeDB();
+
+        return data;
     }
 
     public class Column implements BaseColumns {

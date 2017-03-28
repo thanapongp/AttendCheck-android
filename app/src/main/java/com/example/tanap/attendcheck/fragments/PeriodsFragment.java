@@ -89,10 +89,14 @@ public class PeriodsFragment extends Fragment {
         Periods periodsTable = new Periods(getActivity().getApplicationContext());
         ArrayList<String> days = periodsTable.getAvailibleDays();
 
+        for (String day : days) {
+            Log.d("Availible day", "Day:" + day);
+        }
+
         String[] daysArr = days.toArray(new String[days.size()]);
 
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(
-                getActivity().getApplicationContext(), R.layout.spinner_layout, daysArr
+                getContext(), R.layout.spinner_layout, daysArr
         );
 
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
