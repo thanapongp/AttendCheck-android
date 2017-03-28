@@ -1,8 +1,7 @@
 package com.example.tanap.attendcheck.fragments;
 
-import android.app.ProgressDialog;
-import android.content.Context;
-import android.net.Uri;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -12,14 +11,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.tanap.attendcheck.R;
 import com.example.tanap.attendcheck.db.Attendances;
 import com.example.tanap.attendcheck.db.Schedules;
-import com.example.tanap.attendcheck.tasks.AttendanceCheckTask;
-
-import org.w3c.dom.Text;
+import com.example.tanap.attendcheck.tasks.AttendCheckTask;
+import com.example.tanap.attendcheck.tasks.WifiSearchTask;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,8 +25,10 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
-public class AttendCheckFragment extends Fragment implements View.OnClickListener,
-        AttendanceCheckTask.AttendanceCheckTaskResponse {
+public class AttendCheckFragment extends Fragment
+        implements View.OnClickListener,
+                   WifiSearchTask.WifiSearchTaskResponse,
+                   AttendCheckTask.AttendCheckTaskResponse {
     @BindView(R.id.text_subjectName) TextView subjectText;
     @BindView(R.id.text_roomName) TextView roomText;
     @BindView(R.id.text_attendStatus) TextView statusText;
@@ -102,13 +101,46 @@ public class AttendCheckFragment extends Fragment implements View.OnClickListene
         checkBtn.setClickable(false);
         Log.d("Click", "Clicky click");
 
-        new AttendanceCheckTask(this, getContext(), scheduleID, courseRoom).execute();
+        new WifiSearchTask(this, getContext(), scheduleID, courseRoom).execute();
     }
 
     @Override
-    public void onAttendanceCheckComplete(boolean successState) {
-        Log.d("Method Triggered", "onAttendanceCheckComplete");
-        statusText.setText("คุณเช็คชื่อแล้ว");
-        checkBtn.setAlpha(.25f);
+    public void onWifiSearchComplete(boolean successState) {
+        if (successState) {
+            new AttendCheckTask(this, getContext(), scheduleID).execute();
+        } else {
+            AlertDialog.Builder alertBuilder = new AlertDialog.Builder(getActivity());
+
+            alertBuilder.setMessage("ไม่พบอุปกรณ์ Raspberry Pi ประจำห้อง")
+                        .setTitle("ไม่สามารถเช็คชื่อได้")
+                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {}
+                        });
+
+            AlertDialog dialog = alertBuilder.create();
+            dialog.show();
+        }
+    }
+
+    @Override
+    public void onAttendCheckComplete(boolean successState) {
+        if (successState) {
+            Log.d("Method Triggered", "onAttendanceCheckComplete");
+            statusText.setText("คุณเช็คชื่อแล้ว");
+            checkBtn.setAlpha(.25f);
+        } else {
+            AlertDialog.Builder alertBuilder = new AlertDialog.Builder(getActivity());
+
+            alertBuilder.setMessage("มีข้อผิดพลาดเกิดขึ้นระหว่างการเช็คชื่อ \n กรุณาลองใหม่อีกครั้ง")
+                    .setTitle("ไม่สามารถเช็คชื่อได้")
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {}
+                    });
+
+            AlertDialog dialog = alertBuilder.create();
+            dialog.show();
+        }
     }
 }
