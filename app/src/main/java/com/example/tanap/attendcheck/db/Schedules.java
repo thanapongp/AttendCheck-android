@@ -60,7 +60,7 @@ public class Schedules extends Table {
 
     public static String getCreateSQL() {
         return "CREATE TABLE IF NOT EXISTS `schedules` (\n" +
-                "  `" + Column.ID + "` INTEGER PRIMARY KEY AUTOINCREMENT,\n" +
+                "  `" + Column.ID + "` INTEGER,\n" +
                 "  `course_id` TEXT,\n" +
                 "  `room` TEXT,\n" +
                 "  `start_date` TEXT,\n" +

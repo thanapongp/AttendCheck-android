@@ -70,6 +70,7 @@ public class InsertDataToDBTask {
             ContentValues values = new ContentValues();
             JSONObject coursesObject = coursesArray.getJSONObject(i);
 
+            values.put(Courses.Column.ID, coursesObject.getInt("id"));
             values.put(Courses.Column.CODE, coursesObject.getString("code"));
             values.put(Courses.Column.NAME, coursesObject.getString("name"));
             values.put(Courses.Column.SECTION, coursesObject.getInt("section"));
@@ -93,6 +94,7 @@ public class InsertDataToDBTask {
             ContentValues values = new ContentValues();
             JSONObject scheduleObject = schedulesArray.getJSONObject(i);
 
+            values.put(Schedules.Column.ID, scheduleObject.getInt("id"));
             values.put(Schedules.Column.COURSE_ID, courseid);
             values.put(Schedules.Column.ROOM, scheduleObject.getString("room"));
             values.put(Schedules.Column.START_DATE, scheduleObject.getString("start_date"));
@@ -111,6 +113,7 @@ public class InsertDataToDBTask {
             ContentValues values = new ContentValues();
             JSONObject periodObject = periodsArray.getJSONObject(i);
 
+            values.put(Periods.Column.ID, periodObject.getInt("id"));
             values.put(Periods.Column.COURSE_ID, courseid);
             values.put(Periods.Column.DAY, periodObject.getInt("day"));
             values.put(Periods.Column.START_TIME, periodObject.getString("start_time"));

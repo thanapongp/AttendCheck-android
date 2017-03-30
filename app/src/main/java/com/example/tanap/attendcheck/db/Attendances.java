@@ -14,7 +14,7 @@ public class Attendances extends Table {
 
     public static String getCreateSQL() {
         return "CREATE TABLE IF NOT EXISTS `attendances` (\n" +
-                "  `" + Column.ID + "` INTEGER PRIMARY KEY AUTOINCREMENT,\n" +
+                "  `" + Column.ID + "` INTEGER,\n" +
                 "  `schedule_id` INTEGER,\n" +
                 "  `student_id` INTEGER,\n" +
                 "  `in_time` TEXT,\n" +

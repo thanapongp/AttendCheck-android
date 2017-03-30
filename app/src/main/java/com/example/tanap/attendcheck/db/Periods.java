@@ -19,7 +19,7 @@ public class Periods extends Table {
 
     public static String getCreateSQL() {
         return "CREATE TABLE IF NOT EXISTS `periods` (\n" +
-                "  `" + Column.ID + "` INTEGER PRIMARY KEY AUTOINCREMENT,\n" +
+                "  `" + Column.ID + "` INTEGER,\n" +
                 "  `course_id` TEXT,\n" +
                 "  `day` INTEGER,\n" +
                 "  `start_time` TEXT,\n" +

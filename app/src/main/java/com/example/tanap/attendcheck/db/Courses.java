@@ -12,7 +12,7 @@ public class Courses extends Table {
 
     public static String getCreateSQL() {
         return "CREATE TABLE IF NOT EXISTS `courses` (\n" +
-                "  `" + Column.ID + "` INTEGER PRIMARY KEY AUTOINCREMENT,\n" +
+                "  `" + Column.ID + "` INTEGER,\n" +
                 "  `code` TEXT,\n" +
                 "  `name` TEXT,\n" +
                 "  `section` INTEGER,\n" +
