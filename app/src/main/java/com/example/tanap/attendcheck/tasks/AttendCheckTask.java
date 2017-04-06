@@ -101,7 +101,7 @@ public class AttendCheckTask {
                     Log.d("Response Message", String.valueOf(message.toString()));
 
                     Attendances attendancesTable = new Attendances(context);
-                    attendancesTable.attend(scheduleID, message.toString());
+                    attendancesTable.attend(scheduleID);
 
 
                     Handler mainHandler = new Handler(context.getMainLooper());

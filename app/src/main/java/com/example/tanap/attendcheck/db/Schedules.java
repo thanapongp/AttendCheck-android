@@ -58,6 +58,26 @@ public class Schedules extends Table {
                         "ORDER BY schedules.start_date ASC LIMIT 1;", null);
     }
 
+    public Integer getNextScheduleInMins() {
+        Cursor cursor = db.rawQuery(
+                "SELECT CAST ((JulianDay(end_date) - JulianDay('now')) * 24 * 60 As Integer) " +
+                "AS next_in_mins FROM (" +
+                "SELECT schedules._id, courses.code, courses.name, schedules.room, schedules.start_date, schedules.end_date " +
+                "FROM courses, schedules WHERE schedules.course_id = courses._id AND start_date > (DATETIME('now','localtime')) " +
+                "ORDER BY schedules.start_date ASC LIMIT 1)"
+        , null);
+
+        Integer nextScheduleInMins = null;
+
+        while (cursor.moveToNext()) {
+            nextScheduleInMins = cursor.getInt(cursor.getColumnIndex("next_in_mins"));
+        }
+
+        cursor.close();
+
+        return nextScheduleInMins;
+    }
+
     public static String getCreateSQL() {
         return "CREATE TABLE IF NOT EXISTS `schedules` (\n" +
                 "  `" + Column.ID + "` INTEGER,\n" +

@@ -107,6 +107,7 @@ public class WifiSearchTask extends AsyncTask<Void, Void, Boolean> {
                         return true;
                     }
                 }
+
             }
         }
 

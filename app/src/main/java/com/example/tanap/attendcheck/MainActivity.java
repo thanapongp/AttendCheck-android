@@ -1,7 +1,10 @@
 package com.example.tanap.attendcheck;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -27,6 +30,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+
+        updateData();
 
         setSupportActionBar(toolbar);
 
@@ -59,6 +64,24 @@ public class MainActivity extends AppCompatActivity {
             public void onTabUnselected(TabLayout.Tab tab) {}
             public void onTabReselected(TabLayout.Tab tab) {}
         });
+    }
+
+    private void updateData() {
+        if (isNetworkAvailable()) {
+            // run update data task
+            // truncate attendances, periods, courses, schedules table
+            // fetch new data
+            // insert data back in
+        }
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectManager =
+                (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo netInfo = connectManager.getActiveNetworkInfo();
+
+        return netInfo != null && netInfo.isConnected();
     }
 
     @Override

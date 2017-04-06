@@ -28,7 +28,7 @@ public class Periods extends Table {
                 "  `updated_at` TEXT);";
     }
 
-    public ArrayList<String> getAvailibleDays() {
+    public ArrayList<String> getAvailableDays() {
         Cursor cursor = db.rawQuery("SELECT DISTINCT " +
                 "(CASE day " +
                 "WHEN 1 THEN 'วันจันทร์' " +

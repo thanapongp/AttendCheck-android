@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.util.Log;
 
+import com.example.tanap.attendcheck.db.Attendances;
 import com.example.tanap.attendcheck.db.Courses;
 import com.example.tanap.attendcheck.db.DB;
 import com.example.tanap.attendcheck.db.Periods;
@@ -122,6 +123,22 @@ public class InsertDataToDBTask {
             values.put(Periods.Column.UPDATED_AT, periodObject.getString("updated_at"));
 
             db.insert(Periods.TABLE, null, values);
+        }
+    }
+
+    public void insertDataToAttendancesTable(JSONObject response, SQLiteDatabase db)
+        throws JSONException, SQLiteException {
+        JSONArray attendancesArray = response.getJSONArray("attendances");
+
+        for (int i = 0; i < attendancesArray.length(); i++) {
+            ContentValues values = new ContentValues();
+            JSONObject attendanceObject = attendancesArray.getJSONObject(i);
+
+            JSONObject pivotObject = attendanceObject.getJSONObject("pivot");
+
+            values.put(Attendances.Column.SCHEDULE_ID, pivotObject.getInt("schedule_id"));
+
+            db.insert(Attendances.TABLE, null, values);
         }
     }
 }

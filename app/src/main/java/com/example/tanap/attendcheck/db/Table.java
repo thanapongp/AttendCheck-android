@@ -21,4 +21,8 @@ public abstract class Table {
     public static String getDropSQL() {
         return "DROP TABLE IF EXISTS `" + TABLE + "`;";
     }
+
+    public void truncate() {
+        db.rawQuery("DELETE FROM `" + TABLE + "`;", null).close();
+    }
 }

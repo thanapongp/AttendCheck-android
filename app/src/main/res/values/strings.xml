@@ -10,7 +10,7 @@
     <string name="login_backToLoginLink">ลงทะเบียนอุปกรณ์ใหม่</string>
     <string name="login_msg_authenticating">กำลังเข้าสู่ระบบ</string>
     <string name="login_msg_registering">กำลังทำการลงทะเบียน</string>
-    <string name="app_server_address">http://192.168.1.101:8000</string>
+    <string name="app_server_address">http://192.168.1.102:8000</string>
     <string name="app_server_register_endpoint">/api/register</string>
 
     <!-- TODO: Remove or change this placeholder text -->

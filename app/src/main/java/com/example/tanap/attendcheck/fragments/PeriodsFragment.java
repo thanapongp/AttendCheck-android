@@ -1,7 +1,6 @@
 package com.example.tanap.attendcheck.fragments;
 
 
-import android.content.Context;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
@@ -14,7 +13,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Spinner;
@@ -87,7 +85,7 @@ public class PeriodsFragment extends Fragment {
 
     private void fetchDaysWithPeriods() {
         Periods periodsTable = new Periods(getActivity().getApplicationContext());
-        ArrayList<String> days = periodsTable.getAvailibleDays();
+        ArrayList<String> days = periodsTable.getAvailableDays();
 
         for (String day : days) {
             Log.d("Availible day", "Day:" + day);
