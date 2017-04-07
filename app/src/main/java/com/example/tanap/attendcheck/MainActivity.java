@@ -14,12 +14,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.example.tanap.attendcheck.interfaces.AsyncResponseBoolean;
+import com.example.tanap.attendcheck.tasks.UpdateDataTask;
 import com.example.tanap.attendcheck.utils.PagerAdapter;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements AsyncResponseBoolean {
     @BindView(R.id.toolBar_logo) TextView toolbar_logo;
     @BindView(R.id.tabLayout) TabLayout tabLayout;
     @BindView(R.id.pager) ViewPager viewPager;
@@ -68,10 +70,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void updateData() {
         if (isNetworkAvailable()) {
-            // run update data task
-            // truncate attendances, periods, courses, schedules table
-            // fetch new data
-            // insert data back in
+            new UpdateDataTask(MainActivity.this, this).execute();
         }
     }
 
@@ -92,5 +91,10 @@ public class MainActivity extends AppCompatActivity {
 
     public void openSettingActivity(MenuItem item) {
         startActivity(new Intent(getApplicationContext(), SettingActivity.class));
+    }
+
+    @Override
+    public void processFinish(Boolean result) {
+        //
     }
 }

@@ -10,6 +10,11 @@ public class Courses extends Table {
         super(context);
     }
 
+    @Override
+    public String tableName() {
+        return "courses";
+    }
+
     public static String getCreateSQL() {
         return "CREATE TABLE IF NOT EXISTS `courses` (\n" +
                 "  `" + Column.ID + "` INTEGER,\n" +
@@ -20,6 +25,10 @@ public class Courses extends Table {
                 "  `year` INTEGER,\n" +
                 "  `late_time` INTEGER,\n" +
                 "  `updated_at` TEXT);";
+    }
+
+    public static String getDropSQL() {
+        return "DROP TABLE IF EXISTS `" + TABLE + "`;";
     }
 
     public class Column implements BaseColumns {

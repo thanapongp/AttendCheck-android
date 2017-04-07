@@ -14,6 +14,11 @@ public class User extends Table {
         super(context);
     }
 
+    @Override
+    public String tableName() {
+        return "users";
+    }
+
     public static String getCreateSQL() {
         return "CREATE TABLE IF NOT EXISTS `users` (\n" +
                 "  `" + Column.ID + "` INTEGER PRIMARY KEY AUTOINCREMENT,\n" +
@@ -25,6 +30,10 @@ public class User extends Table {
                 "  `lastname` TEXT,\n" +
                 "  `uid` TEXT,\n" +
                 "  `updated_at` TEXT);";
+    }
+
+    public static String getDropSQL() {
+        return "DROP TABLE IF EXISTS `" + TABLE + "`;";
     }
 
     public ArrayList<HashMap<String, String>> getUserInfo() {

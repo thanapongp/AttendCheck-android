@@ -17,6 +17,11 @@ public class Periods extends Table {
         super(context);
     }
 
+    @Override
+    public String tableName() {
+        return "periods";
+    }
+
     public static String getCreateSQL() {
         return "CREATE TABLE IF NOT EXISTS `periods` (\n" +
                 "  `" + Column.ID + "` INTEGER,\n" +
@@ -26,6 +31,10 @@ public class Periods extends Table {
                 "  `end_time` TEXT,\n" +
                 "  `room` TEXT,\n" +
                 "  `updated_at` TEXT);";
+    }
+
+    public static String getDropSQL() {
+        return "DROP TABLE IF EXISTS `" + TABLE + "`;";
     }
 
     public ArrayList<String> getAvailableDays() {
@@ -47,6 +56,8 @@ public class Periods extends Table {
         }
 
         cursor.close();
+
+        super.closeDB();
 
         return data;
     }
@@ -88,6 +99,8 @@ public class Periods extends Table {
         }
 
         cursor.close();
+
+        super.closeDB();
 
         return data;
     }

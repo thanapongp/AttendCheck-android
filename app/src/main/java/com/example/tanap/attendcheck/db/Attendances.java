@@ -12,10 +12,19 @@ public class Attendances extends Table {
         super(context);
     }
 
+    @Override
+    public String tableName() {
+        return "attendances";
+    }
+
     public static String getCreateSQL() {
         return "CREATE TABLE IF NOT EXISTS `attendances` (\n" +
                 "  `" + Column.ID + "` INTEGER PRIMARY KEY AUTOINCREMENT,\n" +
                 "  `schedule_id` INTEGER);";
+    }
+
+    public static String getDropSQL() {
+        return "DROP TABLE IF EXISTS `" + TABLE + "`;";
     }
 
     public Boolean checkIfAlreadyAttendance(Integer scheduleID) {
@@ -25,6 +34,8 @@ public class Attendances extends Table {
         boolean alreadyAttended = (cursor.getCount() != 0);
 
         cursor.close();
+
+        super.closeDB();
 
         return alreadyAttended;
     }

@@ -14,6 +14,11 @@ public class Schedules extends Table {
         super(context);
     }
 
+    @Override
+    public String tableName() {
+        return "schedules";
+    }
+
     public ArrayList<HashMap<String, String>> getNextOrCurrentSchedule() {
         Cursor cursor = getCurrentSchedule();
         if (cursor.getCount() == 0) {
@@ -36,6 +41,8 @@ public class Schedules extends Table {
         }
 
         cursor.close();
+
+        super.closeDB();
 
         return data;
     }
@@ -75,6 +82,8 @@ public class Schedules extends Table {
 
         cursor.close();
 
+        super.closeDB();
+
         return nextScheduleInMins;
     }
 
@@ -86,6 +95,10 @@ public class Schedules extends Table {
                 "  `start_date` TEXT,\n" +
                 "  `end_date` TEXT,\n" +
                 "  `updated_at` TEXT);";
+    }
+
+    public static String getDropSQL() {
+        return "DROP TABLE IF EXISTS `" + TABLE + "`;";
     }
 
     public class Column implements BaseColumns {

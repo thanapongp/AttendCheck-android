@@ -19,9 +19,6 @@ import org.json.JSONObject;
 
 public class InsertDataToDBTask {
 
-    public InsertDataToDBTask() {
-    }
-
     public boolean insertUserDataToDBForTheFirstTime(
             JSONObject response, Context context, String username, String password, String email
     ) {
@@ -38,6 +35,34 @@ public class InsertDataToDBTask {
             e.printStackTrace();
             return false;
 
+        } finally {
+            db.endTransaction();
+            db.close();
+        }
+    }
+
+    public boolean updateDataInDB(JSONObject response, Context context) {
+
+        new Attendances(context).truncate();
+        new Courses(context).truncate();
+        new Periods(context).truncate();
+        new Schedules(context).truncate();
+
+        SQLiteDatabase db = new DB(context).getWritableDatabase();
+
+        db.beginTransactionNonExclusive();
+
+        try {
+            insertDataToCourseTable(response, db);
+            insertDataToAttendancesTable(response, db);
+
+            db.setTransactionSuccessful();
+
+            return true;
+        } catch (SQLiteException | JSONException e) {
+            e.printStackTrace();
+
+            return false;
         } finally {
             db.endTransaction();
             db.close();
@@ -80,14 +105,14 @@ public class InsertDataToDBTask {
             values.put(Courses.Column.LATE_TIME, coursesObject.getInt("late_time"));
             values.put(Courses.Column.UPDATED_AT, coursesObject.getString("updated_at"));
 
-            long newrowid = db.insert(Courses.TABLE, null, values);
+            db.insert(Courses.TABLE, null, values);
 
-            insertDataToSchedulesTable(db, coursesObject, newrowid);
-            insertDataToPeriodsTable(db, coursesObject, newrowid);
+            insertDataToSchedulesTable(db, coursesObject);
+            insertDataToPeriodsTable(db, coursesObject);
         }
     }
 
-    public void insertDataToSchedulesTable(SQLiteDatabase db, JSONObject coursesObject, long courseid)
+    public void insertDataToSchedulesTable(SQLiteDatabase db, JSONObject coursesObject)
             throws JSONException, SQLiteException {
         JSONArray schedulesArray = coursesObject.getJSONArray("schedules");
 
@@ -96,7 +121,7 @@ public class InsertDataToDBTask {
             JSONObject scheduleObject = schedulesArray.getJSONObject(i);
 
             values.put(Schedules.Column.ID, scheduleObject.getInt("id"));
-            values.put(Schedules.Column.COURSE_ID, courseid);
+            values.put(Schedules.Column.COURSE_ID, scheduleObject.getInt("course_id"));
             values.put(Schedules.Column.ROOM, scheduleObject.getString("room"));
             values.put(Schedules.Column.START_DATE, scheduleObject.getString("start_date"));
             values.put(Schedules.Column.END_DATE, scheduleObject.getString("end_date"));
@@ -106,7 +131,7 @@ public class InsertDataToDBTask {
         }
     }
 
-    public void insertDataToPeriodsTable(SQLiteDatabase db, JSONObject coursesObject, long courseid)
+    public void insertDataToPeriodsTable(SQLiteDatabase db, JSONObject coursesObject)
             throws JSONException, SQLiteException {
         JSONArray periodsArray = coursesObject.getJSONArray("periods");
 
@@ -115,7 +140,7 @@ public class InsertDataToDBTask {
             JSONObject periodObject = periodsArray.getJSONObject(i);
 
             values.put(Periods.Column.ID, periodObject.getInt("id"));
-            values.put(Periods.Column.COURSE_ID, courseid);
+            values.put(Periods.Column.COURSE_ID, periodObject.getInt("course_id"));
             values.put(Periods.Column.DAY, periodObject.getInt("day"));
             values.put(Periods.Column.START_TIME, periodObject.getString("start_time"));
             values.put(Periods.Column.END_TIME, periodObject.getString("end_time"));
