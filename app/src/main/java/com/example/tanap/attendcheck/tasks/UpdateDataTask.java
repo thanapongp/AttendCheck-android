@@ -36,6 +36,8 @@ public class UpdateDataTask extends AsyncHttpResponseHandler {
         this.client = new AsyncHttpClient();
         this.url = context.getResources().getString(R.string.app_server_address);
         this.endPoint = getURLendPoint();
+
+        this.client.setMaxRetriesAndTimeout(1, AsyncHttpClient.DEFAULT_SOCKET_TIMEOUT);
     }
 
     private String getURLendPoint() {
@@ -95,12 +97,8 @@ public class UpdateDataTask extends AsyncHttpResponseHandler {
 
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context);
 
-        dialogBuilder.setTitle("เกิดผิดพลาดบางอย่าง")
-                .setMessage("ข้อผิดพลาดบางอย่างได้เกิดขึ้น")
-                .setPositiveButton("จ่ะ", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {}
-                })
+        dialogBuilder.setTitle("เกิดผิดพลาดระหว่างการอัพเดทข้อมูล")
+                .setMessage("ไม่สามารถติดต่อกับ Server ได้")
                 .setNegativeButton("ปิด", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {}

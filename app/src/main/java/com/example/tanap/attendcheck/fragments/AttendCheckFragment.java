@@ -1,7 +1,10 @@
 package com.example.tanap.attendcheck.fragments;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -32,6 +35,7 @@ public class AttendCheckFragment extends Fragment
     @BindView(R.id.text_subjectName) TextView subjectText;
     @BindView(R.id.text_roomName) TextView roomText;
     @BindView(R.id.text_attendStatus) TextView statusText;
+    @BindView(R.id.instruction_text) TextView instructionText;
 
     public FloatingActionButton checkBtn;
     private String courseName;
@@ -76,6 +80,8 @@ public class AttendCheckFragment extends Fragment
         
         scheduleID = Integer.parseInt(schedule.get(0).get("id"));
 
+        Log.d("Schedule ID", scheduleID.toString());
+
         courseName = schedule.get(0).get("code") + " " + schedule.get(0).get("name");
         courseRoom = schedule.get(0).get("room");
 
@@ -86,9 +92,13 @@ public class AttendCheckFragment extends Fragment
 
         Attendances attendancesTable = new Attendances(getContext());
         if (attendancesTable.checkIfAlreadyAttendance(scheduleID)) {
-            checkBtn.setClickable(false);
             statusText.setText("คุณเช็คชื่อแล้ว");
-            checkBtn.setAlpha(.25f);
+            //checkBtn.setAlpha(.25f);
+
+            checkBtn.setOnClickListener(new CheckOutBtnClickListener());
+            checkBtn.setImageResource(R.drawable.ic_exit_to_app_white_24dp);
+
+            instructionText.setText("กดเพื่อเช็คชื่อออก");
         }
     }
 
@@ -101,13 +111,15 @@ public class AttendCheckFragment extends Fragment
         checkBtn.setClickable(false);
         Log.d("Click", "Clicky click");
 
-        new WifiSearchTask(this, getContext(), scheduleID, courseRoom).execute();
+        new WifiSearchTask(
+                this, getContext(), courseRoom, WifiSearchTask.SEARCH_ATTEND
+        ).execute();
     }
 
     @Override
-    public void onWifiSearchComplete(boolean successState) {
+    public void onWifiSearchComplete(boolean successState, int type) {
         if (successState) {
-            new AttendCheckTask(this, getContext(), scheduleID).execute();
+            new AttendCheckTask(this, getContext(), scheduleID, type).execute();
         } else {
             AlertDialog.Builder alertBuilder = new AlertDialog.Builder(getActivity());
 
@@ -124,11 +136,29 @@ public class AttendCheckFragment extends Fragment
     }
 
     @Override
-    public void onAttendCheckComplete(boolean successState) {
+    public void onAttendCheckComplete(boolean successState, int type) {
         if (successState) {
             Log.d("Method Triggered", "onAttendanceCheckComplete");
             statusText.setText("คุณเช็คชื่อแล้ว");
-            checkBtn.setAlpha(.25f);
+            //checkBtn.setAlpha(.25f);
+
+            if (type == WifiSearchTask.SEARCH_ATTEND) {
+                checkBtn.setOnClickListener(new CheckOutBtnClickListener());
+                checkBtn.setImageResource(R.drawable.ic_exit_to_app_white_24dp);
+                checkBtn.setClickable(true);
+                instructionText.setText("กดเพื่อเช็คชื่อออก");
+            } else if (type == WifiSearchTask.SEARCH_CHECKOUT) {
+                checkBtn.setAlpha(.25f);
+                checkBtn.setClickable(false);
+            }
+
+            WifiManager wifiManager =
+                    (WifiManager) getContext().getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+
+            // prevent WiFi from reconnect itself
+            wifiManager.disableNetwork(wifiManager.getConnectionInfo().getNetworkId());
+            wifiManager.disconnect();
+
         } else {
             AlertDialog.Builder alertBuilder = new AlertDialog.Builder(getActivity());
 
@@ -141,6 +171,21 @@ public class AttendCheckFragment extends Fragment
 
             AlertDialog dialog = alertBuilder.create();
             dialog.show();
+
+            checkBtn.setClickable(true);
+        }
+    }
+
+    private class CheckOutBtnClickListener implements View.OnClickListener {
+
+        @Override
+        public void onClick(View v) {
+            checkBtn.setClickable(false);
+
+            new WifiSearchTask(
+                    AttendCheckFragment.this, getContext(), courseRoom,
+                    WifiSearchTask.SEARCH_CHECKOUT
+            ).execute();
         }
     }
 }

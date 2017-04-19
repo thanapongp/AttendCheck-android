@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -14,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.example.tanap.attendcheck.fragments.AttendCheckFragment;
 import com.example.tanap.attendcheck.interfaces.AsyncResponseBoolean;
 import com.example.tanap.attendcheck.tasks.UpdateDataTask;
 import com.example.tanap.attendcheck.utils.PagerAdapter;
@@ -26,6 +28,7 @@ public class MainActivity extends AppCompatActivity implements AsyncResponseBool
     @BindView(R.id.tabLayout) TabLayout tabLayout;
     @BindView(R.id.pager) ViewPager viewPager;
     @BindView(R.id.toolBar) Toolbar toolbar;
+    private PagerAdapter pagerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,9 +50,12 @@ public class MainActivity extends AppCompatActivity implements AsyncResponseBool
         tabLayout.addTab(tabLayout.newTab().setText("ตารางเรียน"));
 
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-        tabLayout.setElevation(3);
 
-        final PagerAdapter pagerAdapter = new PagerAdapter(
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            tabLayout.setElevation(3);
+        }
+
+        pagerAdapter = new PagerAdapter(
                 getSupportFragmentManager(), tabLayout.getTabCount()
         );
 
@@ -95,6 +101,6 @@ public class MainActivity extends AppCompatActivity implements AsyncResponseBool
 
     @Override
     public void processFinish(Boolean result) {
-        //
+        viewPager.setAdapter(pagerAdapter);
     }
 }

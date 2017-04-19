@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.example.tanap.attendcheck.db.Attendances;
@@ -36,13 +37,16 @@ public class AttendCheckTask {
     private MqttAndroidClient client;
     private String clientID;
 
+    private int type;
+
     public AttendCheckTask(AttendCheckTaskResponse attendCheckFragment,
-                           Context context, Integer scheduleID) {
+                           Context context, Integer scheduleID, int type) {
 
         this.responseClass = attendCheckFragment;
         this.context = context;
         this.scheduleID = scheduleID;
         this.userInfo = new User(context).getUserInfo();
+        this.type = type;
     }
 
     public void execute() {
@@ -71,7 +75,7 @@ public class AttendCheckTask {
                 @Override
                 public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
                     Log.w("MQTT Connect status", "FAILED CODE: " + client.getResultCode());
-                    responseClass.onAttendCheckComplete(false);
+                    responseClass.onAttendCheckComplete(false, type);
                 }
             });
         } catch (MqttException e) {
@@ -80,7 +84,7 @@ public class AttendCheckTask {
     }
 
     private void sendAttendCheckRequest() {
-        final String requestTopicPrefix = "attendance/request/";
+        String requestTopicPrefix = getRequestTopicPrefix();
 
         String username = userInfo.get(0).get("username");
 
@@ -97,18 +101,23 @@ public class AttendCheckTask {
 
             client.subscribe("attendcheck/response/" + clientID, 0, new IMqttMessageListener() {
                 @Override
-                public void messageArrived(String topic, MqttMessage message) throws Exception {
+                public void messageArrived(String topic, final MqttMessage message) throws Exception {
                     Log.d("Response Message", String.valueOf(message.toString()));
 
-                    Attendances attendancesTable = new Attendances(context);
-                    attendancesTable.attend(scheduleID);
-
+                    if (! message.toString().contains("error")) {
+                        Attendances attendancesTable = new Attendances(context);
+                        attendancesTable.attend(scheduleID);
+                    }
 
                     Handler mainHandler = new Handler(context.getMainLooper());
                     Runnable runnable = new Runnable() {
                         @Override
                         public void run() {
-                            responseClass.onAttendCheckComplete(true);
+                            if (! message.toString().contains("error")) {
+                                responseClass.onAttendCheckComplete(true, type);
+                            } else {
+                                responseClass.onAttendCheckComplete(false, type);
+                            }
                         }
                     };
 
@@ -123,7 +132,19 @@ public class AttendCheckTask {
         }
     }
 
+    @NonNull
+    private String getRequestTopicPrefix() {
+        switch (this.type) {
+            case WifiSearchTask.SEARCH_ATTEND:
+                return "attendance/request/";
+
+            case WifiSearchTask.SEARCH_CHECKOUT:
+                return "attendance/checkout/";
+        }
+        return null;
+    }
+
     public interface AttendCheckTaskResponse {
-        void onAttendCheckComplete(boolean successState);
+        void onAttendCheckComplete(boolean successState, int type);
     }
 }

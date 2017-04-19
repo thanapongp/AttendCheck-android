@@ -30,8 +30,8 @@ import java.util.List;
 
 public class WifiSearchTask extends AsyncTask<Void, Void, Boolean> {
 
-    private final String rPiUri = "tcp://192.168.10.1:1883";
-    private final String requestTopicPrefix = "attendance/request/";
+    public static final int SEARCH_ATTEND = 1;
+    public static final int SEARCH_CHECKOUT = 2;
 
     private String courseRoom;
     private String accesspoint_SSID;
@@ -39,21 +39,18 @@ public class WifiSearchTask extends AsyncTask<Void, Void, Boolean> {
     private Context context;
     private ProgressDialog dialog;
 
-    private MqttAndroidClient client;
+    private int searchType;
 
-    WifiSearchTaskResponse responseClass;
-    private String clientID;
+    private WifiSearchTaskResponse responseClass;
 
     public WifiSearchTask(WifiSearchTaskResponse attendCheckFragment,
-                          Context context, Integer scheduleID, String courseRoom) {
+                          Context context, String courseRoom, int type) {
         this.courseRoom = courseRoom;
         this.context = context;
         this.responseClass = attendCheckFragment;
-        accesspoint_SSID = constructAccessPointName(this.courseRoom);
-    }
+        this.searchType = type;
 
-    private ArrayList<HashMap<String, String>> getUserInfo(Context context) {
-        return new User(context).getUserInfo();
+        accesspoint_SSID = constructAccessPointName(this.courseRoom);
     }
 
     private String constructAccessPointName(String courseRoom) {
@@ -76,13 +73,20 @@ public class WifiSearchTask extends AsyncTask<Void, Void, Boolean> {
 
     private boolean connectToAccessPoint(String accesspoint_ssid) {
         WifiConfiguration conf = new WifiConfiguration();
-        Log.d("Looking for AP name", "AttendCheck_SC412");
+        Log.d("Looking for AP name", accesspoint_ssid);
 
         conf.SSID = "\"" + accesspoint_ssid + "\"";
         conf.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.NONE);
+        boolean state = false;
 
         WifiManager wifiManager = (WifiManager) context.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
         wifiManager.addNetwork(conf);
+
+        // if it's already connected to room's accesspoint (for some reason),
+        // then, we don't have to scan and reconnect again.
+        if (wifiManager.getConnectionInfo().getSSID().contains(accesspoint_ssid)) {
+            return true;
+        }
 
         List<WifiConfiguration> wifiList = wifiManager.getConfiguredNetworks();
         List<ScanResult> wifiScanResult = wifiManager.getScanResults();
@@ -95,19 +99,23 @@ public class WifiSearchTask extends AsyncTask<Void, Void, Boolean> {
                     Log.d("Config WiFi", configWiFi.SSID);
                     if (configWiFi.SSID.trim().equals(conf.SSID)) {
                         wifiManager.disconnect();
-                        wifiManager.enableNetwork(configWiFi.networkId, true);
-                        wifiManager.reconnect();
+                        state = wifiManager.enableNetwork(configWiFi.networkId, true);
 
-                        try {
-                            Thread.sleep(2000);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-
-                        return true;
+                    } else {
+                        wifiManager.disableNetwork(configWiFi.networkId);
                     }
                 }
 
+                wifiManager.reconnect();
+
+                // delay to let wifi reconnect
+                try {
+                    Thread.sleep(3000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+                return state;
             }
         }
 
@@ -117,10 +125,10 @@ public class WifiSearchTask extends AsyncTask<Void, Void, Boolean> {
     @Override
     protected void onPostExecute(Boolean aBoolean) {
         dialog.dismiss();
-        responseClass.onWifiSearchComplete(aBoolean);
+        responseClass.onWifiSearchComplete(aBoolean, this.searchType);
     }
 
     public interface WifiSearchTaskResponse {
-        void onWifiSearchComplete(boolean successState);
+        void onWifiSearchComplete(boolean successState, int type);
     }
 }
