@@ -13,7 +13,8 @@
         android:paddingLeft="24dp"
         android:paddingRight="24dp"
         android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true">
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true">
 
         <TextView
             android:id="@+id/text_attendStatus"
@@ -21,6 +22,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
+            android:textAlignment="center"
+            android:gravity="center"
             android:textSize="30sp"
             android:textColor="@android:color/white"
             android:text="คุณยังไม่ได้เช็คชื่อ"/>
@@ -37,6 +40,7 @@
                 android:layout_height="wrap_content"
                 android:textColor="@android:color/white"
                 android:textAlignment="center"
+                android:gravity="center"
                 android:text="วิชา: 1106204 ระบบฐานข้อมูล"/>
 
             <TextView
@@ -46,6 +50,7 @@
                 android:paddingTop="10dp"
                 android:textColor="@android:color/white"
                 android:textAlignment="center"
+                android:gravity="center"
                 android:text="ห้อง: SC412"
                 android:layout_below="@id/text_subjectName"/>
 
@@ -83,9 +88,10 @@
             android:id="@+id/instruction_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="15dp"
+            android:paddingTop="25dp"
             android:textColor="@android:color/white"
             android:textAlignment="center"
+            android:gravity="center"
             android:text="กดเพื่อเช็คชื่อ"/>
 
     </LinearLayout>

@@ -25,6 +25,10 @@ public class Schedules extends Table {
             cursor = getNextSchedule();
         }
 
+        if (cursor.getCount() == 0) {
+            return new ArrayList<>();
+        }
+
         ArrayList<HashMap<String, String>> data = new ArrayList<>();
 
         while (cursor.moveToNext()) {

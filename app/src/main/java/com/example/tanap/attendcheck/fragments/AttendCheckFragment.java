@@ -1,14 +1,18 @@
 package com.example.tanap.attendcheck.fragments;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.net.wifi.WifiInfo;
+import android.content.pm.PackageManager;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -75,6 +79,15 @@ public class AttendCheckFragment extends Fragment
         Schedules schedulesTable = new Schedules(getActivity().getApplicationContext());
         ArrayList<HashMap<String, String>> schedule = schedulesTable.getNextOrCurrentSchedule();
 
+        if (schedule.isEmpty()) {
+            subjectText.setText("ไม่พบคาบเรียน");
+            roomText.setText("");
+            checkBtn.setClickable(false);
+            schedulesTable.closeDB();
+
+            return;
+        }
+
         Log.d("Data", schedule.get(0).get("name"));
         Log.d("Data", schedule.get(0).get("code"));
         
@@ -109,11 +122,38 @@ public class AttendCheckFragment extends Fragment
         }
 
         checkBtn.setClickable(false);
+        checkBtn.setAlpha(.25f);
         Log.d("Click", "Clicky click");
 
         new WifiSearchTask(
                 this, getContext(), courseRoom, WifiSearchTask.SEARCH_ATTEND
         ).execute();
+
+//        int hasLocationPermission = ActivityCompat.checkSelfPermission(getContext(), Manifest.permission_group.LOCATION);
+//        if (hasLocationPermission == PackageManager.PERMISSION_GRANTED) {
+//
+//        } else {
+//            requestPermissions(new String[] {
+//                    Manifest.permission.ACCESS_COARSE_LOCATION,
+//                    Manifest.permission.ACCESS_FINE_LOCATION,
+//            }, 101);
+//        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case 101:
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Log.d("Debug", "onRequestPermissionsResult: Permission granted");
+                    new WifiSearchTask(
+                            this, getContext(), courseRoom, WifiSearchTask.SEARCH_ATTEND
+                    ).execute();
+                }
+                break;
+            default:
+                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
     }
 
     @Override
@@ -123,7 +163,8 @@ public class AttendCheckFragment extends Fragment
         } else {
             AlertDialog.Builder alertBuilder = new AlertDialog.Builder(getActivity());
 
-            alertBuilder.setMessage("ไม่พบอุปกรณ์ Raspberry Pi ประจำห้อง")
+            alertBuilder.setMessage("ไม่พบอุปกรณ์ Raspberry Pi ประจำห้อง \n" +
+                    "หากท่านใช้อุปกรณ์ที่เป็น Android 6 ขึ้นไป \n กรุณาเปิด GPS แล้วลองใหม่อีกครั้ง")
                         .setTitle("ไม่สามารถเช็คชื่อได้")
                         .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                             @Override
@@ -132,6 +173,8 @@ public class AttendCheckFragment extends Fragment
 
             AlertDialog dialog = alertBuilder.create();
             dialog.show();
+            checkBtn.setClickable(true);
+            checkBtn.setAlpha(1f);
         }
     }
 
@@ -140,7 +183,7 @@ public class AttendCheckFragment extends Fragment
         if (successState) {
             Log.d("Method Triggered", "onAttendanceCheckComplete");
             statusText.setText("คุณเช็คชื่อแล้ว");
-            //checkBtn.setAlpha(.25f);
+            checkBtn.setAlpha(1f);
 
             if (type == WifiSearchTask.SEARCH_ATTEND) {
                 checkBtn.setOnClickListener(new CheckOutBtnClickListener());
@@ -160,19 +203,20 @@ public class AttendCheckFragment extends Fragment
             wifiManager.disconnect();
 
         } else {
-            AlertDialog.Builder alertBuilder = new AlertDialog.Builder(getActivity());
-
-            alertBuilder.setMessage("มีข้อผิดพลาดเกิดขึ้นระหว่างการเช็คชื่อ \n กรุณาลองใหม่อีกครั้ง")
-                    .setTitle("ไม่สามารถเช็คชื่อได้")
-                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {}
-                    });
-
-            AlertDialog dialog = alertBuilder.create();
-            dialog.show();
+//            AlertDialog.Builder alertBuilder = new AlertDialog.Builder(getActivity());
+//
+//            alertBuilder.setMessage("มีข้อผิดพลาดเกิดขึ้นระหว่างการเช็คชื่อ \n กรุณาลองใหม่อีกครั้ง")
+//                    .setTitle("ไม่สามารถเช็คชื่อได้")
+//                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+//                        @Override
+//                        public void onClick(DialogInterface dialog, int which) {}
+//                    });
+//
+//            AlertDialog dialog = alertBuilder.create();
+//            dialog.show();
 
             checkBtn.setClickable(true);
+            checkBtn.setAlpha(1f);
         }
     }
 

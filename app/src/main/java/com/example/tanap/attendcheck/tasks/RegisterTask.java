@@ -96,6 +96,8 @@ public class RegisterTask extends AsyncHttpResponseHandler {
 
     @Override
     public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+        dialog.dismiss();
+
         Log.d("Request fail", "Code: " + statusCode);
         Log.d("Request fail", "Code: " + error.getMessage());
 

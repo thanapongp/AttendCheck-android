@@ -1,5 +1,6 @@
 package com.example.tanap.attendcheck.tasks;
 
+import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.net.wifi.ScanResult;
@@ -54,7 +55,8 @@ public class WifiSearchTask extends AsyncTask<Void, Void, Boolean> {
     }
 
     private String constructAccessPointName(String courseRoom) {
-        return "AttendCheck_" + courseRoom;
+        //return "AttendCheck_" + courseRoom;
+        return "AttendCheck_SC412";
     }
 
     @Override
