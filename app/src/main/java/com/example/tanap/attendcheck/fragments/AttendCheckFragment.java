@@ -12,7 +12,6 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,9 +40,19 @@ public class AttendCheckFragment extends Fragment
     @BindView(R.id.text_attendStatus) TextView statusText;
     @BindView(R.id.instruction_text) TextView instructionText;
 
+    /**
+     * Instance of circular checking button.
+     */
     public FloatingActionButton checkBtn;
-    private String courseName;
+
+    /**
+     * Course room number. Use to construct the WIFI-SSID.
+     */
     private String courseRoom;
+
+    /**
+     * The current schedule ID.
+     */
     private Integer scheduleID;
 
 
@@ -68,6 +77,13 @@ public class AttendCheckFragment extends Fragment
         super.onDetach();
     }
 
+    /**
+     * Create new instance of fragment, initialize necessary variables
+     * and fetch the current schedule from SQLite DB.
+     *
+     * @param view  Instance of view.
+     * @param savedInstanceState Saved instance state.
+     */
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -76,9 +92,11 @@ public class AttendCheckFragment extends Fragment
         checkBtn = (FloatingActionButton) getView().findViewById(R.id.btn_checkBtn);
         checkBtn.setOnClickListener(this);
 
+        // Fetch the current schedule from SQLite DB.
         Schedules schedulesTable = new Schedules(getActivity().getApplicationContext());
         ArrayList<HashMap<String, String>> schedule = schedulesTable.getNextOrCurrentSchedule();
 
+        // If no schedule is not found, then do nothing and change the text to inform the user.
         if (schedule.isEmpty()) {
             subjectText.setText("ไม่พบคาบเรียน");
             roomText.setText("");
@@ -95,14 +113,18 @@ public class AttendCheckFragment extends Fragment
 
         Log.d("Schedule ID", scheduleID.toString());
 
-        courseName = schedule.get(0).get("code") + " " + schedule.get(0).get("name");
+        String courseName = schedule.get(0).get("code") + " " + schedule.get(0).get("name");
+
+        // Store the course room to use it build the SSID later in the process.
         courseRoom = schedule.get(0).get("room");
 
         schedulesTable.closeDB();
 
-        subjectText.setText("วิชา: " + courseName);
-        roomText.setText("ห้อง: " + courseRoom);
+        subjectText.setText(String.format("วิชา: %s", courseName));
+        roomText.setText(String.format("ห้อง: %s", courseRoom));
 
+        // Now we will check if the user already attended the current schedule.
+        // If yes, then just switch the button to 'checkout' state.
         Attendances attendancesTable = new Attendances(getContext());
         if (attendancesTable.checkIfAlreadyAttendance(scheduleID)) {
             statusText.setText("คุณเช็คชื่อแล้ว");
@@ -115,6 +137,11 @@ public class AttendCheckFragment extends Fragment
         }
     }
 
+    /**
+     * Perform check when the check button is click.
+     *
+     * @param v Clicked view.
+     */
     @Override
     public void onClick(View v) {
         if (v.getId() != R.id.btn_checkBtn) {
@@ -125,6 +152,8 @@ public class AttendCheckFragment extends Fragment
         checkBtn.setAlpha(.25f);
         Log.d("Click", "Clicky click");
 
+        // Thanks to Android 6's permission thingy, this is what I have to do to make it work.
+        // Requesting location permissions before actually start looking for WIFI SSID.
         int hasLocationPermission = ActivityCompat.checkSelfPermission(getContext(), Manifest.permission_group.LOCATION);
         if (hasLocationPermission == PackageManager.PERMISSION_GRANTED) {
             startWifiSearchTask();
@@ -150,6 +179,9 @@ public class AttendCheckFragment extends Fragment
         }
     }
 
+    /**
+     * New up the WifiSearchTask and start it.
+     */
     private void startWifiSearchTask() {
         new WifiSearchTask(
                 this, getContext(), courseRoom, WifiSearchTask.SEARCH_ATTEND

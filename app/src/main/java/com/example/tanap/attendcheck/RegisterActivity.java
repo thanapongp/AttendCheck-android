@@ -26,7 +26,26 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnTextChanged;
 
+/**
+ * AttendCheck | The application for AttendCheck checking system.
+ * See: https://github.com/thanapongp/attend-check-server
+ * for server-side application detail and documentation.
+ *
+ * This class is the main entry point for the application. it will check if
+ * the user already logged in to the application or not, if yes, they will
+ * be redirected to MainActivity.
+ *
+ * @author Thanapong Prathumchat
+ * @version 1.0
+ */
 public class RegisterActivity extends AppCompatActivity implements AsyncResponseBoolean {
+
+    /**
+     * Butterknife provides an easy way to bind the view to a variable without a hassle.
+     * All we have to do is just tell it what view should be bind to what variable.
+     *
+     * See: http://jakewharton.github.io/butterknife/ for more detail.
+     */
     @BindView(R.id.app_logo) TextView logo;
     @BindView(R.id.btn_register) Button registerBtn;
     @BindView(R.id.registerNewDeviceLink) TextView registerNewDevice;
@@ -40,6 +59,8 @@ public class RegisterActivity extends AppCompatActivity implements AsyncResponse
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        // Check if the user is already logged in, if yes, then we will redirect them to
+        // the MainActivity and close this activity.
         if (userHasAlreadyLogin()) {
             startMainActivity();
         }
@@ -55,11 +76,11 @@ public class RegisterActivity extends AppCompatActivity implements AsyncResponse
         this.boot();
     }
 
-    private void startMainActivity() {
-        finish();
-        startActivity(new Intent(getApplicationContext(), MainActivity.class));
-    }
-
+    /**
+     * Check if the user is already logged in.
+     *
+     * @return boolean
+     */
     private boolean userHasAlreadyLogin() {
         SharedPreferences pref = getApplicationContext().getSharedPreferences(
                 "login_pref", Context.MODE_PRIVATE
@@ -68,12 +89,24 @@ public class RegisterActivity extends AppCompatActivity implements AsyncResponse
         return pref.getBoolean("already_login", false);
     }
 
+    /**
+     * Close this activity and then start MainActivity
+     */
+    private void startMainActivity() {
+        finish();
+        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+    }
+
+    /**
+     * Boot the view.
+     */
     private void boot() {
-        // change logo font
+
+        // Change logo font
         Typeface ralewayFont = Typeface.createFromAsset(getAssets(), "fonts/Raleway-regular.ttf");
         logo.setTypeface(ralewayFont);
 
-        // set event listener
+        // Set event listener
         registerNewDevice.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -85,9 +118,13 @@ public class RegisterActivity extends AppCompatActivity implements AsyncResponse
         SQLiteDatabase db = new DB(getApplicationContext()).getWritableDatabase();
         db.close();
 
+        // Disable the register button by forcing the input validation.
         validateInputs();
     }
 
+    /**
+     * Validate input every time the inputs change.
+     */
     @OnTextChanged(
             value = {
                     R.id.input_username,
@@ -110,6 +147,9 @@ public class RegisterActivity extends AppCompatActivity implements AsyncResponse
         }
     }
 
+    /**
+     * Register the new user.
+     */
     @OnClick(R.id.btn_register)
     public void registerNewUser() {
         if (! passwordEditText.getText().toString().equals(passwordConfirmEditText.getText().toString())) {

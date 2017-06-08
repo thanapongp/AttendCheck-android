@@ -1,7 +1,9 @@
 package com.example.tanap.attendcheck;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Typeface;
@@ -93,9 +95,7 @@ public class MainActivity extends AppCompatActivity implements AsyncResponseBool
                 }, REQUEST_CODE_ASK_PERMISSIONS);
             }
         } else {
-            if (isNetworkAvailable()) {
-                new UpdateDataTask(MainActivity.this, this).execute();
-            }
+            performDataUpdate();
         }
     }
 
@@ -104,11 +104,9 @@ public class MainActivity extends AppCompatActivity implements AsyncResponseBool
         switch (requestCode) {
             case REQUEST_CODE_ASK_PERMISSIONS:
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    if (isNetworkAvailable()) {
-                        new UpdateDataTask(MainActivity.this, this).execute();
-                    }
+                    performDataUpdate();
                 } else {
-                    //
+                    showNoPermissionDialog();
                 }
                 break;
             default:
@@ -123,6 +121,25 @@ public class MainActivity extends AppCompatActivity implements AsyncResponseBool
         NetworkInfo netInfo = connectManager.getActiveNetworkInfo();
 
         return netInfo != null && netInfo.isConnected();
+    }
+
+    private void performDataUpdate() {
+        if (isNetworkAvailable()) {
+            new UpdateDataTask(MainActivity.this, this).execute();
+        }
+    }
+
+    private void showNoPermissionDialog() {
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(MainActivity.this);
+
+        dialogBuilder.setTitle("ไม่สามารถอัพเดทข้อมูลได้")
+                .setMessage("เนื่องจากท่านไม่อนุญาตให้เข้าถึงการใช้งาน Location")
+                .setNegativeButton("ปิด", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {}
+                });
+
+        dialogBuilder.create().show();
     }
 
     @Override
