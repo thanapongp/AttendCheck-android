@@ -125,19 +125,15 @@ public class AttendCheckFragment extends Fragment
         checkBtn.setAlpha(.25f);
         Log.d("Click", "Clicky click");
 
-        new WifiSearchTask(
-                this, getContext(), courseRoom, WifiSearchTask.SEARCH_ATTEND
-        ).execute();
-
-//        int hasLocationPermission = ActivityCompat.checkSelfPermission(getContext(), Manifest.permission_group.LOCATION);
-//        if (hasLocationPermission == PackageManager.PERMISSION_GRANTED) {
-//
-//        } else {
-//            requestPermissions(new String[] {
-//                    Manifest.permission.ACCESS_COARSE_LOCATION,
-//                    Manifest.permission.ACCESS_FINE_LOCATION,
-//            }, 101);
-//        }
+        int hasLocationPermission = ActivityCompat.checkSelfPermission(getContext(), Manifest.permission_group.LOCATION);
+        if (hasLocationPermission == PackageManager.PERMISSION_GRANTED) {
+            startWifiSearchTask();
+        } else {
+            requestPermissions(new String[] {
+                    Manifest.permission.ACCESS_COARSE_LOCATION,
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+            }, 101);
+        }
     }
 
     @Override
@@ -146,14 +142,18 @@ public class AttendCheckFragment extends Fragment
             case 101:
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     Log.d("Debug", "onRequestPermissionsResult: Permission granted");
-                    new WifiSearchTask(
-                            this, getContext(), courseRoom, WifiSearchTask.SEARCH_ATTEND
-                    ).execute();
+                    startWifiSearchTask();
                 }
                 break;
             default:
                 super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
+    }
+
+    private void startWifiSearchTask() {
+        new WifiSearchTask(
+                this, getContext(), courseRoom, WifiSearchTask.SEARCH_ATTEND
+        ).execute();
     }
 
     @Override
