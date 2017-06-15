@@ -1,6 +1,8 @@
 package com.example.tanap.attendcheck;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
@@ -38,7 +40,7 @@ import butterknife.OnTextChanged;
  * @author Thanapong Prathumchat
  * @version 1.0
  */
-public class RegisterActivity extends AppCompatActivity implements AsyncResponseBoolean {
+public class RegisterActivity extends AppCompatActivity implements RegisterTask.AsyncResponseWithStatusCode {
 
     /**
      * Butterknife provides an easy way to bind the view to a variable without a hassle.
@@ -94,7 +96,7 @@ public class RegisterActivity extends AppCompatActivity implements AsyncResponse
      */
     private void startMainActivity() {
         finish();
-        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+        startActivity(new Intent(this, MainActivity.class));
     }
 
     /**
@@ -152,13 +154,15 @@ public class RegisterActivity extends AppCompatActivity implements AsyncResponse
      */
     @OnClick(R.id.btn_register)
     public void registerNewUser() {
-        if (! passwordEditText.getText().toString().equals(passwordConfirmEditText.getText().toString())) {
-            Log.d("Debug EditText", "Password Edit Text:" + passwordEditText.getText());
-            Log.d("Debug EditText", "Password Confirm Edit Text:" + passwordConfirmEditText.getText());
+        String password = passwordEditText.getText().toString();
+        String passwordConfirmation = passwordConfirmEditText.getText().toString();
+
+        if (! validatePassword(password, passwordConfirmation)) {
             Toast.makeText(this, "Passwords don't match", Toast.LENGTH_SHORT).show();
             return;
         }
 
+        // If everything is good
         new RegisterTask(RegisterActivity.this, this)
         .execute(
                 usernameEditText.getText().toString(),
@@ -167,19 +171,68 @@ public class RegisterActivity extends AppCompatActivity implements AsyncResponse
         );
     }
 
+    public boolean validatePassword(String password, String passwordConfirmation) {
+        return password.equals(passwordConfirmation);
+    }
+
     @Override
-    public void processFinish(Boolean result) {
-        if (! result) {
-            return;
+    public void processFinish(Integer status) {
+        switch (status) {
+            case RegisterTask.SUCCESS:
+                loginAndRedirectUser();
+                break;
+            case RegisterTask.HTTP_NOTFOUND:
+                showNotFoundDialog();
+                break;
+            case RegisterTask.HTTP_CONFLICT:
+                showConflictDialog();
+                break;
         }
+    }
 
-        //Toast.makeText(this, "all done!", Toast.LENGTH_SHORT).show();
-
+    private void loginAndRedirectUser() {
         getApplicationContext().getSharedPreferences("login_pref", Context.MODE_PRIVATE)
                 .edit()
                 .putBoolean("already_login", true)
                 .apply();
 
         startMainActivity();
+    }
+
+    private void showConflictDialog() {
+        AlertDialog.Builder dialogBuilder = getDialogBuilder();
+
+        dialogBuilder.setTitle("ไม่สามารถลงทะเบียนได้")
+                .setMessage("รหัสนักศึกษานี้ได้ทำการลงทะเบียนแล้ว\n" +
+                        "หากต้องการลงทะเบียนอุปกรณ์ใหม่กรุณากดปุ่มลงทะเบียน")
+                .setPositiveButton("ลงทะเบียน", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        startActivity(new Intent(RegisterActivity.this, RegisterNewDeviceActivity.class));
+                    }
+                })
+                .setNegativeButton("ปิด", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {}
+                });
+
+        dialogBuilder.create().show();
+    }
+
+    private void showNotFoundDialog() {
+        AlertDialog.Builder dialogBuilder = getDialogBuilder();
+
+        dialogBuilder.setTitle("ไม่สามารถลงทะเบียนได้")
+                .setMessage("ไม่พบรหัสนักศึกษานี้")
+                .setNegativeButton("ปิด", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {}
+                });
+
+        dialogBuilder.create().show();
+    }
+
+    private AlertDialog.Builder getDialogBuilder() {
+        return new AlertDialog.Builder(RegisterActivity.this);
     }
 }

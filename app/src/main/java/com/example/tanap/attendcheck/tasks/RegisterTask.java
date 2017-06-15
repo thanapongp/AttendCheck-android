@@ -17,14 +17,16 @@ import cz.msebera.android.httpclient.Header;
 
 public class RegisterTask extends AsyncHttpResponseHandler {
 
-    private static final int HTTP_CONFLICT = 409;
-    private static final int HTTP_NOTFOUND = 404;
+    public static final int HTTP_CONFLICT = 409;
+    public static final int HTTP_NOTFOUND = 404;
+    public static final int ERR_DBERROR = 0;
+    public static final int SUCCESS = 1;
     private final InsertDataToDBTask insertDataToDBTask = new InsertDataToDBTask();
 
     private String url;
     private String endPoint;
 
-    private AsyncResponseBoolean responseClass;
+    private AsyncResponseWithStatusCode responseClass;
     private AsyncHttpClient client;
     private ProgressDialog dialog;
     private Context context;
@@ -33,7 +35,7 @@ public class RegisterTask extends AsyncHttpResponseHandler {
     private String password;
     private String email;
 
-    public RegisterTask(Context context, AsyncResponseBoolean responseClass) {
+    public RegisterTask(Context context, AsyncResponseWithStatusCode responseClass) {
         this.responseClass = responseClass;
         this.context = context;
 
@@ -86,9 +88,9 @@ public class RegisterTask extends AsyncHttpResponseHandler {
         if (insertDataToDBTask.insertUserDataToDBForTheFirstTime(
                 jsonResponseBody, context, this.username, this.password, this.email
         )) {
-            responseClass.processFinish(true);
+            responseClass.processFinish(SUCCESS);
         } else {
-            responseClass.processFinish(false);
+            responseClass.processFinish(ERR_DBERROR);
         }
 
         dialog.dismiss();
@@ -101,41 +103,16 @@ public class RegisterTask extends AsyncHttpResponseHandler {
         Log.d("Request fail", "Code: " + statusCode);
         Log.d("Request fail", "Code: " + error.getMessage());
 
-        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context);
-
         if (statusCode == HTTP_CONFLICT) {
-            showConflictDialog(dialogBuilder);
+            responseClass.processFinish(HTTP_CONFLICT);
         }
 
         if (statusCode == HTTP_NOTFOUND) {
-            showNotFoundDialog(dialogBuilder);
+            responseClass.processFinish(HTTP_NOTFOUND);
         }
     }
 
-    private void showConflictDialog(AlertDialog.Builder dialogBuilder) {
-        dialogBuilder.setTitle("ไม่สามารถลงทะเบียนได้")
-                     .setMessage("รหัสนักศึกษานี้ได้ทำการลงทะเบียนแล้ว\n" +
-                                 "หากต้องการลงทะเบียนอุปกรณ์ใหม่กรุณากดปุ่มลงทะเบียน")
-                    .setPositiveButton("ลงทะเบียน", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {}
-                    })
-                     .setNegativeButton("ปิด", new DialogInterface.OnClickListener() {
-                         @Override
-                         public void onClick(DialogInterface dialog, int which) {}
-                     });
-
-        dialogBuilder.create().show();
-    }
-
-    private void showNotFoundDialog(AlertDialog.Builder dialogBuilder) {
-        dialogBuilder.setTitle("ไม่สามารถลงทะเบียนได้")
-                .setMessage("ไม่พบรหัสนักศึกษานี้")
-                .setNegativeButton("ปิด", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {}
-                });
-
-        dialogBuilder.create().show();
+    public interface AsyncResponseWithStatusCode {
+        void processFinish(Integer status);
     }
 }
