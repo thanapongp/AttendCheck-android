@@ -64,7 +64,7 @@ public class Periods extends Table {
 
     public ArrayList<HashMap<String, String>> getPeriodsOnSelectedDay(Integer dayValue) {
         Cursor cursor = db.rawQuery(
-                "SELECT courses.name, periods.room, periods.start_time, periods.end_time " +
+                "SELECT courses.code, courses.name, periods.room, periods.start_time, periods.end_time " +
                 "FROM courses, periods " +
                 "WHERE periods.day = ? AND periods.course_id = courses._id",
                 new String[] { dayValue.toString() });
@@ -90,6 +90,7 @@ public class Periods extends Table {
                 e.printStackTrace();
             }
 
+            dataHashMap.put("code", cursor.getString(cursor.getColumnIndex("code")));
             dataHashMap.put("name", cursor.getString(cursor.getColumnIndex("name")));
             dataHashMap.put("room", cursor.getString(cursor.getColumnIndex("room")));
             dataHashMap.put("start_time", start_time + " - " + end_time);

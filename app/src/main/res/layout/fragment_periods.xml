@@ -24,4 +24,13 @@
         android:layout_height="wrap_content">
 
     </ListView>
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="กดที่ชื่อวิชาเพื่อดูสถิติการเข้าเรียน"
+        android:gravity="center"
+        android:textColor="@android:color/white"
+        android:textSize="16sp"/>
 </LinearLayout>

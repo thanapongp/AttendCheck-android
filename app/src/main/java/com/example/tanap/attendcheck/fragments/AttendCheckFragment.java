@@ -98,8 +98,10 @@ public class AttendCheckFragment extends Fragment
 
         // If no schedule is not found, then do nothing and change the text to inform the user.
         if (schedule.isEmpty()) {
-            subjectText.setText("ไม่พบคาบเรียน");
+            subjectText.setText("");
+            statusText.setText("ไม่พบคาบเรียน");
             roomText.setText("");
+            checkBtn.setAlpha(.25f);
             checkBtn.setClickable(false);
             schedulesTable.closeDB();
 

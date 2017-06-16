@@ -16,6 +16,8 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.tanap.attendcheck.R;
 import com.example.tanap.attendcheck.db.Periods;
@@ -30,7 +32,7 @@ import butterknife.ButterKnife;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class PeriodsFragment extends Fragment {
+public class PeriodsFragment extends Fragment implements AdapterView.OnItemClickListener {
     @BindView (R.id.days_spinner) Spinner daysSpinner;
     @BindView (R.id.periods_list_view) ListView listview;
 
@@ -38,8 +40,19 @@ public class PeriodsFragment extends Fragment {
     public BaseAdapter adapter;
     public ArrayList<HashMap<String, String>> periods = new ArrayList<>();
 
-    String[] from = new String[] { "name", "room", "start_time" };
-    int[] to = new int[] { R.id.item_subjectname, R.id.item_subjectroom, R.id.item_time };
+    String[] from = new String[] { 
+            "code", 
+            "name", 
+            "room", 
+            "start_time" 
+    };
+    
+    int[] to = new int[] { 
+            R.id.item_subjectcode, 
+            R.id.item_subjectname, 
+            R.id.item_subjectroom, 
+            R.id.item_time 
+    };
 
 
     public PeriodsFragment() {
@@ -66,6 +79,7 @@ public class PeriodsFragment extends Fragment {
 
         adapter = new SimpleAdapter(getActivity().getApplicationContext(), periods, R.layout.layout_periodsitem, from, to);
         listview.setAdapter(adapter);
+        listview.setOnItemClickListener(this);
 
         Log.d("Data Lenght", String.valueOf(periods.size()));
 
@@ -88,7 +102,7 @@ public class PeriodsFragment extends Fragment {
         ArrayList<String> days = periodsTable.getAvailableDays();
 
         for (String day : days) {
-            Log.d("Availible day", "Day:" + day);
+            Log.d("Available day", "Day:" + day);
         }
 
         String[] daysArr = days.toArray(new String[days.size()]);
@@ -137,5 +151,12 @@ public class PeriodsFragment extends Fragment {
             default:
                 return null;
         }
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        TextView textView = (TextView) view.findViewById(R.id.item_subjectcode);
+
+        Toast.makeText(getActivity(), textView.getText().toString(), Toast.LENGTH_SHORT).show();
     }
 }

@@ -23,6 +23,14 @@
 
         <TextView
             android:textColor="@android:color/white"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/item_subjectcode"
+            android:visibility="gone"
+            android:text="รหัสวิชา" />
+
+        <TextView
+            android:textColor="@android:color/white"
             android:layout_width="match_parent"
             android:layout_height="26dip"
             android:id="@+id/item_time"
