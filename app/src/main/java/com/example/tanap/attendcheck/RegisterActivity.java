@@ -10,7 +10,6 @@ import android.graphics.Typeface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,10 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.tanap.attendcheck.db.DB;
-import com.example.tanap.attendcheck.interfaces.AsyncResponseBoolean;
 import com.example.tanap.attendcheck.tasks.RegisterTask;
-
-import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -213,7 +209,7 @@ public class RegisterActivity extends AppCompatActivity implements RegisterTask.
                 })
                 .setNegativeButton("ปิด", new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {}
+                    public void onClick(DialogInterface dialog, int which) { dialog.cancel(); }
                 });
 
         dialogBuilder.create().show();
@@ -226,7 +222,7 @@ public class RegisterActivity extends AppCompatActivity implements RegisterTask.
                 .setMessage("ไม่พบรหัสนักศึกษานี้")
                 .setNegativeButton("ปิด", new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {}
+                    public void onClick(DialogInterface dialog, int which) { dialog.cancel(); }
                 });
 
         dialogBuilder.create().show();

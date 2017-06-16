@@ -49,6 +49,7 @@ public class UpdateDataTask extends AsyncHttpResponseHandler {
     }
 
     public void execute() {
+        Log.d("Making request", "To " + url + endPoint);
         client.get(url + endPoint, this);
     }
 
