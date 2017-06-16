@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.tanap.attendcheck.tasks.GetNewDeviceData;
 import com.example.tanap.attendcheck.tasks.RequestNewDeviceCodeTask;
 
 import butterknife.BindView;
@@ -21,7 +22,8 @@ import butterknife.OnTextChanged;
 
 public class RegisterNewDeviceActivity extends AppCompatActivity
         implements DialogInterface.OnClickListener,
-                   RequestNewDeviceCodeTask.AsyncResponseWithStatusCode {
+                   RequestNewDeviceCodeTask.AsyncResponseWithStatusCode,
+                   GetNewDeviceData.AsyncResponseWithStatusCode {
     @BindView(R.id.app_logo) TextView logo;
     @BindView(R.id.input_username) EditText inputUsername;
     @BindView(R.id.input_password) EditText inputPassword;
@@ -148,7 +150,12 @@ public class RegisterNewDeviceActivity extends AppCompatActivity
 
     @Override
     public void onClick(DialogInterface dialog, int which) {
-        Toast.makeText(RegisterNewDeviceActivity.this, input.getText().toString(), Toast.LENGTH_SHORT).show();
+        new GetNewDeviceData(this, this).execute(input.getText().toString());
+    }
+
+    @Override
+    public void processGetDataFinish(Integer status) {
+
     }
 
     interface CallBack {
