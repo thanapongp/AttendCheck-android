@@ -1,12 +1,15 @@
 package com.example.tanap.attendcheck;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputType;
 import android.text.TextUtils;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -98,6 +101,8 @@ public class RegisterNewDeviceActivity extends AppCompatActivity
             case RequestNewDeviceCodeTask.HTTP_CONFLICT:
                 showStatusDialog("ไม่สามารถขอรหัสเปลี่ยนอุปกรณ์ได้", "เนื่องจากผู้ใช้นี้ยังไม่เคยลงทะเบียนอุปกรณ์ในระบบ");
                 break;
+            default:
+                Log.e("ERROR", "Status Code: " + status.toString());
         }
     }
 
@@ -155,7 +160,22 @@ public class RegisterNewDeviceActivity extends AppCompatActivity
 
     @Override
     public void processGetDataFinish(Integer status) {
+        switch (status) {
+            case GetNewDeviceData.SUCCESS:
+                loginAndRedirect();
+            default:
+                Log.e("ERROR", "Status Code: " + status.toString());
+        }
+    }
 
+    public void loginAndRedirect() {
+        getApplicationContext().getSharedPreferences("login_pref", Context.MODE_PRIVATE)
+                .edit()
+                .putBoolean("already_login", true)
+                .apply();
+
+        finish();
+        startActivity(new Intent(this, MainActivity.class));
     }
 
     interface CallBack {

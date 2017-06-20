@@ -9,6 +9,9 @@ import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import cz.msebera.android.httpclient.Header;
 
 public class GetNewDeviceData extends AsyncHttpResponseHandler {
@@ -66,12 +69,34 @@ public class GetNewDeviceData extends AsyncHttpResponseHandler {
 
     @Override
     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+        JSONObject jsonResponseBody;
 
+        try {
+            Log.d("Request success", "Try to convert to JSONObject");
+            jsonResponseBody = new JSONObject(new String(responseBody));
+            Log.d("Request success", "Body: " + jsonResponseBody.toString());
+
+            new InsertDataToDBTask().insertUserDataToDBForTheFirstTime(
+                    jsonResponseBody,
+                    context,
+                    jsonResponseBody.getString("username"),
+                    "",
+                    jsonResponseBody.getString("email")
+            );
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        dialog.dismiss();
+
+        responseClass.processGetDataFinish(SUCCESS);
     }
 
     @Override
     public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+        dialog.dismiss();
 
+        responseClass.processGetDataFinish(statusCode);
     }
 
     public interface AsyncResponseWithStatusCode {
