@@ -14,10 +14,12 @@
     <string name="login_msg_updating">กำลังทำการอัพเดทข้อมูล</string>
     <string name="login_msg_requesting">กำลังทำการขอรหัสลงทะเบียนอุปกรณ์</string>
     <string name="login_msg_requesting_newdata">กำลังทำการขอข้อมูลอุปกรณ์</string>
+    <string name="login_msg_requesting_record">กำลังทำการขอข้อมูลการเข้าเรียน</string>
     <string name="app_server_address">http://192.168.1.103:8000</string>
     <string name="app_server_register_endpoint">/api/register</string>
     <string name="app_server_requestdevice_endpoint">/api/changedevice/request</string>
     <string name="app_server_changedevice_endpoint">/api/changedevice/change</string>
+    <string name="app_server_record_endpoint">/api/user/record</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

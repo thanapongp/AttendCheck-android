@@ -64,7 +64,8 @@ public class Periods extends Table {
 
     public ArrayList<HashMap<String, String>> getPeriodsOnSelectedDay(Integer dayValue) {
         Cursor cursor = db.rawQuery(
-                "SELECT courses.code, courses.name, periods.room, periods.start_time, periods.end_time " +
+                "SELECT courses.code, courses.section, courses.semester, courses.year, courses.name, " +
+                        "periods.room, periods.start_time, periods.end_time " +
                 "FROM courses, periods " +
                 "WHERE periods.day = ? AND periods.course_id = courses._id",
                 new String[] { dayValue.toString() });
@@ -90,8 +91,18 @@ public class Periods extends Table {
                 e.printStackTrace();
             }
 
-            dataHashMap.put("code", cursor.getString(cursor.getColumnIndex("code")));
-            dataHashMap.put("name", cursor.getString(cursor.getColumnIndex("name")));
+            String courseName = cursor.getString(cursor.getColumnIndex("code")) + " "
+                              + cursor.getString(cursor.getColumnIndex("name"));
+
+            String year = cursor.getString(cursor.getColumnIndex("year"));
+
+            String courseCode = cursor.getString(cursor.getColumnIndex("code"))    + "-"
+                              + semesterValue(cursor.getString(cursor.getColumnIndex("semester"))) + "-"
+                              + year.substring(year.length() - 2) + "-"
+                              + cursor.getString(cursor.getColumnIndex("section"));
+
+            dataHashMap.put("code", courseCode);
+            dataHashMap.put("name", courseName);
             dataHashMap.put("room", cursor.getString(cursor.getColumnIndex("room")));
             dataHashMap.put("start_time", start_time + " - " + end_time);
             dataHashMap.put("end_time", cursor.getString(cursor.getColumnIndex("end_time")));
@@ -104,6 +115,20 @@ public class Periods extends Table {
         super.closeDB();
 
         return data;
+    }
+
+    private String semesterValue(String semester)
+    {
+        switch (semester) {
+            case "ภาคต้น":
+                return "1";
+            case "ภาคปลาย":
+                return "2";
+            case "ภาคฤดูร้อน":
+                return "3";
+            default:
+                return "null";
+        }
     }
 
     public class Column implements BaseColumns {
