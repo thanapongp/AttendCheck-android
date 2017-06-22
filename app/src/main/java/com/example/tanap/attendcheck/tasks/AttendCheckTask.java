@@ -28,6 +28,7 @@ import java.util.HashMap;
 
 public class AttendCheckTask {
 
+    private final String code;
     private AttendCheckTaskResponse responseClass;
     private Context context;
     private Integer scheduleID;
@@ -42,11 +43,19 @@ public class AttendCheckTask {
     public AttendCheckTask(AttendCheckTaskResponse attendCheckFragment,
                            Context context, Integer scheduleID, int type) {
 
+        this(attendCheckFragment, context, scheduleID, type, null);
+
+    }
+
+    public AttendCheckTask(AttendCheckTaskResponse attendCheckFragment,
+                           Context context, Integer scheduleID, int type, String code) {
+
         this.responseClass = attendCheckFragment;
         this.context = context;
         this.scheduleID = scheduleID;
         this.userInfo = new User(context).getUserInfo();
         this.type = type;
+        this.code = (code == null) ? "" : code;
     }
 
     public void execute() {
@@ -93,6 +102,10 @@ public class AttendCheckTask {
             requestPayload.put("schedule_id", String.valueOf(scheduleID));
             requestPayload.put("username", username);
 
+            if (! code.equals("")) {
+                requestPayload.put("code", code);
+            }
+
             MqttMessage payload = new MqttMessage(requestPayload.toString().getBytes("UTF-8"));
             String topic = requestTopicPrefix + this.clientID;
 
@@ -113,11 +126,17 @@ public class AttendCheckTask {
                     Runnable runnable = new Runnable() {
                         @Override
                         public void run() {
-                            if (! message.toString().contains("error")) {
-                                responseClass.onAttendCheckComplete(true, type);
-                            } else {
+                            if (message.toString().contains("error")) {
                                 responseClass.onAttendCheckComplete(false, type);
+                                return;
                             }
+
+                            if (message.toString().contains("needcode")) {
+                                responseClass.onScheduleNeedCode();
+                                return;
+                            }
+
+                            responseClass.onAttendCheckComplete(true, type);
                         }
                     };
 
@@ -146,5 +165,6 @@ public class AttendCheckTask {
 
     public interface AttendCheckTaskResponse {
         void onAttendCheckComplete(boolean successState, int type);
+        void onScheduleNeedCode();
     }
 }

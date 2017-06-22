@@ -12,10 +12,12 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.tanap.attendcheck.R;
@@ -252,6 +254,38 @@ public class AttendCheckFragment extends Fragment
             checkBtn.setClickable(true);
             checkBtn.setAlpha(1f);
         }
+    }
+
+    @Override
+    public void onScheduleNeedCode() {
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getContext());
+
+        dialogBuilder.setTitle("กรุณากรอกรหัสเช็คชื่อ");
+
+        final EditText input = new EditText(getContext());
+        input.setInputType(InputType.TYPE_CLASS_TEXT);
+
+        dialogBuilder.setView(input);
+
+        dialogBuilder.setPositiveButton("เช็คชื่อ", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                new AttendCheckTask(
+                        AttendCheckFragment.this, getContext(),
+                        scheduleID, WifiSearchTask.SEARCH_ATTEND,
+                        input.getText().toString()
+                ).execute();
+            }
+        });
+
+        dialogBuilder.setNegativeButton("ยกเลิก", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        dialogBuilder.show();
     }
 
     private class CheckOutBtnClickListener implements View.OnClickListener {
