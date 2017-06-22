@@ -1,6 +1,7 @@
 package com.example.tanap.attendcheck.fragments;
 
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
@@ -19,6 +20,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.tanap.attendcheck.AttendanceRecord;
 import com.example.tanap.attendcheck.R;
 import com.example.tanap.attendcheck.db.Periods;
 
@@ -155,8 +157,16 @@ public class PeriodsFragment extends Fragment implements AdapterView.OnItemClick
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        TextView textView = (TextView) view.findViewById(R.id.item_subjectcode);
+        String courseCode = ((TextView) view.findViewById(R.id.item_subjectcode)).getText().toString();
+        String courseName = ((TextView) view.findViewById(R.id.item_subjectname)).getText().toString();
 
-        Toast.makeText(getActivity(), textView.getText().toString(), Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(getContext(), AttendanceRecord.class);
+
+        intent.putExtra("courseCode", courseCode);
+        intent.putExtra("courseName", courseName);
+
+        startActivity(intent);
+
+//        Toast.makeText(getActivity(), textView.getText().toString(), Toast.LENGTH_SHORT).show();
     }
 }
