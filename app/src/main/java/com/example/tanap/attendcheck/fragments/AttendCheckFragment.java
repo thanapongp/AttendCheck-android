@@ -258,6 +258,9 @@ public class AttendCheckFragment extends Fragment
 
     @Override
     public void onScheduleNeedCode() {
+        checkBtn.setClickable(true);
+        checkBtn.setAlpha(1f);
+
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getContext());
 
         dialogBuilder.setTitle("กรุณากรอกรหัสเช็คชื่อ");
