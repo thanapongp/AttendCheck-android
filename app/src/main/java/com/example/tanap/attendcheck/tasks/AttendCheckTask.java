@@ -136,6 +136,11 @@ public class AttendCheckTask {
                                 return;
                             }
 
+                            if (message.toString().contains("wrongcode")) {
+                                responseClass.onScheduleWrongCode();
+                                return;
+                            }
+
                             responseClass.onAttendCheckComplete(true, type);
                         }
                     };
@@ -166,5 +171,6 @@ public class AttendCheckTask {
     public interface AttendCheckTaskResponse {
         void onAttendCheckComplete(boolean successState, int type);
         void onScheduleNeedCode();
+        void onScheduleWrongCode();
     }
 }

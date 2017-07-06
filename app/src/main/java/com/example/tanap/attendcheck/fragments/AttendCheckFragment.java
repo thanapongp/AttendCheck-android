@@ -239,17 +239,19 @@ public class AttendCheckFragment extends Fragment
             wifiManager.disconnect();
 
         } else {
-//            AlertDialog.Builder alertBuilder = new AlertDialog.Builder(getActivity());
-//
-//            alertBuilder.setMessage("มีข้อผิดพลาดเกิดขึ้นระหว่างการเช็คชื่อ \n กรุณาลองใหม่อีกครั้ง")
-//                    .setTitle("ไม่สามารถเช็คชื่อได้")
-//                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-//                        @Override
-//                        public void onClick(DialogInterface dialog, int which) {}
-//                    });
-//
-//            AlertDialog dialog = alertBuilder.create();
-//            dialog.show();
+            AlertDialog.Builder alertBuilder = new AlertDialog.Builder(getActivity());
+
+            alertBuilder.setMessage("มีข้อผิดพลาดเกิดขึ้นระหว่างการเช็คชื่อ \n กรุณาลองใหม่อีกครั้ง")
+                    .setTitle("ไม่สามารถเช็คชื่อได้")
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+
+            AlertDialog dialog = alertBuilder.create();
+            dialog.show();
 
             checkBtn.setClickable(true);
             checkBtn.setAlpha(1f);
@@ -289,6 +291,23 @@ public class AttendCheckFragment extends Fragment
         });
 
         dialogBuilder.show();
+    }
+
+    @Override
+    public void onScheduleWrongCode() {
+        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(getActivity());
+
+        alertBuilder.setMessage("รหัสเช็คชือไม่ถูกต้อง \n กรุณาลองใหม่อีกครั้ง")
+                .setTitle("ไม่สามารถเช็คชื่อได้")
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        AttendCheckFragment.this.onScheduleNeedCode();
+                    }
+                });
+
+        AlertDialog dialog = alertBuilder.create();
+        dialog.show();
     }
 
     private class CheckOutBtnClickListener implements View.OnClickListener {
