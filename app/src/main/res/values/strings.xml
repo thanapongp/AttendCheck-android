@@ -15,7 +15,7 @@
     <string name="login_msg_requesting">กำลังทำการขอรหัสลงทะเบียนอุปกรณ์</string>
     <string name="login_msg_requesting_newdata">กำลังทำการขอข้อมูลอุปกรณ์</string>
     <string name="login_msg_requesting_record">กำลังทำการขอข้อมูลการเข้าเรียน</string>
-    <string name="app_server_address">http://192.168.1.110:8000</string>
+    <string name="app_server_address">http://192.168.1.113:8000</string>
     <string name="app_server_register_endpoint">/api/register</string>
     <string name="app_server_requestdevice_endpoint">/api/changedevice/request</string>
     <string name="app_server_changedevice_endpoint">/api/changedevice/change</string>

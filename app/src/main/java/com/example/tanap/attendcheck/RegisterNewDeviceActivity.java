@@ -163,8 +163,16 @@ public class RegisterNewDeviceActivity extends AppCompatActivity
         switch (status) {
             case GetNewDeviceData.SUCCESS:
                 loginAndRedirect();
+                break;
+            case GetNewDeviceData.HTTP_NOTFOUND:
+                showStatusDialog("ไม่สามารถเปลี่ยนอุปกรณ์ได้", "เนื่องจากรหัสไม่ถูกต้อง");
+                break;
+            case GetNewDeviceData.HTTP_CONFLICT:
+                showStatusDialog("ไม่สามารถเปลี่ยนอุปกรณ์ได้", "เนื่่องจากรหัสหมดอายุแล้ว");
+                break;
             default:
                 Log.e("ERROR", "Status Code: " + status.toString());
+                break;
         }
     }
 

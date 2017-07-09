@@ -115,13 +115,7 @@ public class AttendCheckTask {
             client.subscribe("attendcheck/response/" + clientID, 0, new IMqttMessageListener() {
                 @Override
                 public void messageArrived(String topic, final MqttMessage message) throws Exception {
-                    Log.d("Response Message", String.valueOf(message.toString()));
-
-                    if (! message.toString().contains("error")) {
-                        Attendances attendancesTable = new Attendances(context);
-                        attendancesTable.attend(scheduleID);
-                    }
-
+                    
                     Handler mainHandler = new Handler(context.getMainLooper());
                     Runnable runnable = new Runnable() {
                         @Override
@@ -141,6 +135,8 @@ public class AttendCheckTask {
                                 return;
                             }
 
+                            Attendances attendancesTable = new Attendances(context);
+                            attendancesTable.attend(scheduleID);
                             responseClass.onAttendCheckComplete(true, type);
                         }
                     };
